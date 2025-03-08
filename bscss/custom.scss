@@ -1,0 +1,228 @@
+$cure-sky: #87CEEB;
+$cure-sky-dark: #4682B4;
+$primary: $cure-sky;
+$secondary: #6C757D;
+$muji-bg: #FAF9F6;
+$dark-bg: #1E1E1E;
+$text-light: #333333;
+$text-dark: #E0E0E0;
+$white: #FFFFFF;
+
+@use "./node_modules/bootstrap/scss/bootstrap" with (
+    $primary: $primary,
+    $body-bg: $muji-bg,
+    $body-color: $text-light,
+    $border-radius: 8px
+);
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", sans-serif;
+    background: $muji-bg;
+    color: $text-light;
+    padding-top: 56px;
+    @media (min-width: 768px) { padding-top: 64px; }
+    &.dark-mode {
+        background: $dark-bg;
+        color: $text-dark;
+    }
+}
+
+.navbar {
+    background-color: $muji-bg !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .navbar-brand {
+        color: $cure-sky-dark !important;
+        font-weight: 600;
+        font-size: 1.25rem;
+        &:hover { color: darken($cure-sky-dark, 10%) !important; }
+    }
+    .nav-link {
+        color: $text-light !important;
+        &:hover { color: $cure-sky !important; }
+    }
+    &.dark-mode {
+        background-color: $dark-bg !important;
+        .navbar-brand {
+            color: $cure-sky !important;
+            &:hover { color: lighten($cure-sky, 10%) !important; }
+        }
+        .nav-link {
+            color: $text-dark !important;
+            &:hover { color: $cure-sky !important; }
+        }
+    }
+}
+
+// 検索バー（必要最低限）
+.search-container {
+    position: relative;
+    display: flex; // Bootstrapデフォルトに合わせつつ最低限の調整
+    align-items: center; // 上下中央揃えを維持
+}
+.search-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: $text-light;
+    transition: color 0.2s ease;
+    &:hover { color: $cure-sky; }
+}
+.search-form {
+    width: 0 !important;
+    overflow: hidden !important;
+    transition: width 0.3s ease-in-out !important;
+    &.active { width: 250px !important; }
+}
+.search-input {
+    min-width: 200px;
+    border-radius: 8px;
+    &:focus {
+        border-color: $cure-sky;
+        box-shadow: 0 0 0 4px rgba($cure-sky, 0.25);
+    }
+}
+body.dark-mode {
+    .search-icon { color: $text-dark; &:hover { color: $cure-sky; } }
+    .search-input {
+        background: #2D2D2D;
+        color: $text-dark;
+        border: 1px solid $secondary;
+        &:focus { border-color: $cure-sky; }
+    }
+}
+
+#site-footer {
+    background: $muji-bg !important;
+    color: $text-light !important;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+    .footer-link {
+        color: $cure-sky !important;
+        &:hover { color: darken($cure-sky, 10%) !important; }
+    }
+    &.dark-mode {
+        background: $dark-bg !important;
+        color: $text-dark !important;
+        .footer-link {
+            color: $cure-sky !important;
+            &:hover { color: lighten($cure-sky, 10%) !important; }
+        }
+    }
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: $white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .card-img-top { border-radius: 8px 8px 0 0; height: 200px; object-fit: cover; }
+    .card-title { color: $text-light; font-weight: 500; }
+    .price { color: $cure-sky-dark; font-weight: 500; }
+    .card-text { color: $secondary; }
+    .btn-primary {
+        background: $cure-sky !important;
+        border: none;
+        &:hover { background: darken($cure-sky, 10%) !important; }
+    }
+    &.dark-mode {
+        background: #2D2D2D;
+        .card-title, .price { color: $text-dark; }
+        .card-text { color: #ADB5BD; }
+        &:hover { box-shadow: 0 8px 16px rgba($cure-sky, 0.2); }
+    }
+}
+
+.swiper {
+    width: 100% !important;
+    aspect-ratio: 4 / 3;
+    max-height: 60vh;
+    position: relative;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    &-wrapper { height: 100% !important; }
+    &-slide {
+        height: 100% !important;
+        position: relative;
+        overflow: hidden;
+        img { width: 100%; height: 100%; object-fit: cover; }
+    }
+    &-pagination-bullet {
+        background: $white !important;
+        opacity: 0.8;
+        &-active { background: $cure-sky !important; opacity: 1; }
+    }
+    &-button-prev, &-button-next {
+        color: $white !important;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0;
+    }
+    &-button-prev { left: 10px; }
+    &-button-next { right: 10px; }
+}
+.swiper-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $white !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    max-width: 90%;
+    &.text-start { padding-left: 1rem; }
+    &.text-center { width: 100%; text-align: center; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: bold; }
+    p { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+    .btn-primary {
+        background: $cure-sky-dark !important;
+        border: 2px solid $white !important;
+        &:hover { background: lighten($cure-sky-dark, 10%) !important; }
+    }
+}
+
+.feather-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+.feather {
+    position: absolute;
+    background-image: url('./images/feather.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    opacity: 0.7;
+    animation: float 10s infinite ease-in-out;
+}
+.feather-1 { top: 10%; left: 5%; animation-duration: 12s; }
+.feather-2 { top: 30%; left: 20%; animation-duration: 15s; animation-delay: 2s; }
+.feather-3 { top: 50%; left: 40%; animation-duration: 10s; animation-delay: 1s; }
+.feather-4 { top: 70%; left: 60%; animation-duration: 13s; }
+.feather-5 { top: 20%; left: 80%; animation-duration: 11s; animation-delay: 3s; }
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    50% { transform: translateY(100px) rotate(45deg); opacity: 0.4; }
+    100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+}
+body.dark-mode .feather { opacity: 0.5; filter: brightness(0.8); }
+
+main { padding-bottom: 100px; }
+
+.elevation-1 { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1) !important; }
+.elevation-2:hover { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19) !important; }
+body.dark-mode {
+    .elevation-1 { box-shadow: 0 2px 4px rgba($cure-sky, 0.1), 0 4px 12px rgba($cure-sky, 0.1) !important; }
+    .elevation-2:hover { box-shadow: 0 4px 8px rgba($cure-sky, 0.2), 0 6px 20px rgba($cure-sky, 0.19) !important; }
+}

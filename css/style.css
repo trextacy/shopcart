@@ -1,0 +1,376 @@
+/* カスタムテーマ: キュアスカイ風 */
+:root {
+    --bs-primary: #87CEEB;        /* スカイブルー */
+    --bs-primary-rgb: 135, 206, 235;
+    --bs-secondary: #FFC1CC;      /* パステルピンク */
+    --bs-secondary-rgb: 255, 193, 204;
+    --bs-link-color: #FF7588;     /* 濃いピンクリンク */
+    --bs-link-hover-color: #E65B7A;
+    --bs-body-bg: #FFFFFF;        /* 白背景 */
+    --bs-body-color: #333333;     /* 濃グレー */
+    --bs-border-color: #E6E6FA;   /* 薄紫ボーダー */
+    --bs-light: #F5F7FA;          /* 薄い背景用 */
+}
+
+/* Bootstrapの上書き */
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: #6BBEE2;
+    --bs-btn-hover-border-color: #6BBEE2;
+    background: linear-gradient(to right, #87CEEB, #FFC1CC);
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #6BBEE2, #FFB3C1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(135, 206, 235, 0.4);
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--bs-secondary);
+    --bs-btn-border-color: var(--bs-secondary);
+    --bs-btn-hover-bg: #FFB3C1;
+    --bs-btn-hover-border-color: #FFB3C1;
+}
+
+.btn-danger {
+    background-color: #FF7588;
+    border-color: #FF7588;
+    border-radius: 10px;
+    padding: 0.25rem 0.75rem;
+}
+
+.btn-danger:hover {
+    background-color: #E65B7A;
+    border-color: #E65B7A;
+}
+
+.bg-light {
+    background-color: var(--bs-light) !important;
+}
+
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+a {
+    color: var(--bs-link-color);
+}
+
+a:hover {
+    color: var(--bs-link-hover-color);
+}
+
+/* ページ全体 */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+    padding-top: 56px;
+}
+
+@media (min-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+/* カルーセル */
+.carousel {
+    width: 100%;
+}
+
+#myCarousel-title .carousel-inner { /* トップカルーセルのデフォルト（16:9） */
+    border-radius: 0;
+    overflow: visible;
+    aspect-ratio: auto; /* 16:9に戻す */
+}
+
+#myCarousel-title .carousel-inner img {
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+}
+
+#myCarousel-title .carousel-item {
+    height: auto;
+    position: relative;
+    top: auto;
+    left: auto;
+}
+
+#myCarousel-title .carousel-control-prev,
+#myCarousel-title .carousel-control-next {
+    background-color: rgba(135, 206, 235, 0.5); /* 半透明スカイブルー */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#myCarousel-title .carousel-control-prev:hover,
+#myCarousel-title .carousel-control-next:hover {
+    background-color: rgba(135, 206, 235, 0.8);
+}
+
+#myCarousel-title .carousel-control-prev-icon,
+#myCarousel-title .carousel-control-next-icon {
+    background-color: var(--bs-primary); /* スカイブルー */
+    filter: brightness(0.9);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+
+/* インジケーター（プリキュア風、ポップで躍動感のあるデザイン） */
+#myCarousel-title .carousel-indicators {
+    bottom: 1rem; /* インジケーターを少し上に */
+    justify-content: center;
+}
+
+#myCarousel-title .carousel-indicator {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0.3rem;
+    cursor: pointer;
+}
+
+#myCarousel-title .indicator-icon {
+    fill: none;
+    stroke: var(--bs-secondary); /* パステルピンク */
+}
+
+#myCarousel-title .carousel-indicator.active .indicator-icon {
+    stroke: var(--bs-primary); /* スカイブルー */
+    animation: bounce 1.5s infinite ease-in-out; /* プリキュアの躍動感 */
+}
+
+#myCarousel-title .carousel-indicator:hover .indicator-icon {
+    transform: scale(1.2); /* ホバー時の拡大 */
+    transition: transform 0.3s ease;
+}
+
+/* キーフレームアニメーション（プリキュアの軽やかな跳ねる動き） */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* 商品部分のカルーセル（#carousel-*） */
+.carousel-inner:not(#myCarousel-title .carousel-inner) {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 正方形を強制 */
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.carousel-inner:not(#myCarousel-title .carousel-inner) img {
+    height: 100%; /* product_detail.php用 */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.carousel-item:not(#myCarousel-title .carousel-item) {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.carousel-item:hover img {
+    transform: scale(1.05);
+}
+
+.carousel-control-prev:not(#myCarousel-title .carousel-control-prev),
+.carousel-control-next:not(#myCarousel-title .carousel-control-next) {
+    background-color: rgba(135, 206, 235, 0.5); /* 半透明スカイブルー */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-control-prev:not(#myCarousel-title .carousel-control-prev):hover,
+.carousel-control-next:not(#myCarousel-title .carousel-control-next):hover {
+    background-color: rgba(135, 206, 235, 0.8);
+}
+
+.carousel-control-prev-icon:not(#myCarousel-title .carousel-control-prev-icon),
+.carousel-control-next-icon:not(#myCarousel-title .carousel-control-next-icon) {
+    background-color: var(--bs-primary);
+    filter: brightness(0.9);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+
+/* 商品カード */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 15px;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0.5rem 1rem rgba(135, 206, 235, 0.3);
+}
+
+.product-card .card-img-top {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.product-card .card-body {
+    background-color: var(--bs-light);
+}
+
+.product-name {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #FF7588;
+    transition: color 0.3s ease;
+}
+
+.product-name a {
+    color: inherit;
+}
+
+.product-name:hover {
+    color: #E65B7A;
+}
+
+/* フッター */
+#site-footer {
+    background-color: var(--bs-secondary);
+    color: var(--bs-body-color);
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.footer-link {
+    color: var(--bs-link-color);
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: var(--bs-link-hover-color);
+    text-decoration: underline;
+}
+
+#site-footer h5 {
+    color: var(--bs-primary);
+}
+
+/* フォーム */
+.form-select {
+    border: 2px solid var(--bs-secondary);
+    border-radius: 10px;
+    background: white url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23FF7588" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>') no-repeat right 0.75rem center/16px 16px;
+    padding-right: 2.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(135, 206, 235, 0.25);
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+/* cart.php専用 */
+.cart-container {
+    max-width: 900px;
+    padding: 1rem;
+    background: var(--bs-light);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(135, 206, 235, 0.2);
+}
+
+.cart-title {
+    background: linear-gradient(to right, #87CEEB, #FFC1CC);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px 12px 0 0;
+    margin: -1rem -1rem 1rem;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.list-group.cart-item-list {
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background: white;
+    transition: transform 0.2s ease;
+}
+
+.list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(255, 193, 204, 0.3);
+}
+
+.cart-item-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+    margin-left: 1rem;
+}
+
+.cart-item-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    color: var(--bs-primary);
+}
+
+.cart-item-variant {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.cart-item-subtotal {
+    font-weight: bold;
+    color: var(--bs-link-color);
+}
+        .responsive-text {
+            font-size: calc(10px + 2vw); /* Initial font size */
+        }

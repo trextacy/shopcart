@@ -1,0 +1,857 @@
+{
+    "shirt001": {
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "name": "シンプルTシャツ",
+        "description": "<p>毎日着れるシンプルなTシャツ。<\/p>",
+        "lead": "シンプルだよ！",
+        "category": "衣類",
+        "is_public": true,
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white",
+            "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "白",
+            "黒"
+        ],
+        "attributes": {
+            "カラー": [
+                "white",
+                "black"
+            ]
+        },
+        "variants": {
+            "white": {
+                "price": 1500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+            },
+            "black": {
+                "price": 1800,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+            }
+        },
+        "tags": [
+            "Tシャツ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "fruit002": {
+        "name": "フルーツバスケット",
+        "description": "新鮮なフルーツのセット。",
+        "lead": "フルーツだよ！",
+        "category": "食品",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange",
+            "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "オレンジ",
+            "緑"
+        ],
+        "attributes": {
+            "種類": [
+                "orange",
+                "apple"
+            ],
+            "サイズ": [
+                "小",
+                "大"
+            ]
+        },
+        "variants": {
+            "orange-小": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange"
+            },
+            "orange-大": {
+                "price": 1800,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange"
+            },
+            "apple-小": {
+                "price": 1200,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+            },
+            "apple-大": {
+                "price": 2000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+            }
+        },
+        "tags": [
+            "フルーツ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "book003": {
+        "name": "絵本セット",
+        "description": "子供向けの楽しい絵本。",
+        "lead": "絵本だよ！",
+        "category": "書籍",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default"
+        ],
+        "image_descriptions": [
+            "デフォルト"
+        ],
+        "attributes": [],
+        "variants": {
+            "単品": {
+                "price": 800,
+                "sold_out": false,
+                "image": null
+            }
+        },
+        "tags": [
+            "絵本"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "shoe004": {
+        "name": "スニーカー",
+        "description": "おしゃれなスニーカー。",
+        "lead": "スニーカーだよ",
+        "category": "靴",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue",
+            "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "青",
+            "赤"
+        ],
+        "attributes": {
+            "カラー": [
+                "blue",
+                "red"
+            ],
+            "サイズ": [
+                "25",
+                "26",
+                "27"
+            ]
+        },
+        "variants": {
+            "blue-25": {
+                "price": 3000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            },
+            "blue-26": {
+                "price": 3100,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            },
+            "blue-27": {
+                "price": 3200,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            },
+            "red-25": {
+                "price": 3100,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+            },
+            "red-26": {
+                "price": 3200,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+            },
+            "red-27": {
+                "price": 3300,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+            }
+        },
+        "tags": [
+            "スニーカー"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "tea005": {
+        "name": "緑茶",
+        "description": "日本のおいしい緑茶。",
+        "lead": "お茶だよ！",
+        "category": "飲料",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "緑"
+        ],
+        "attributes": {
+            "量": [
+                "50g",
+                "100g"
+            ]
+        },
+        "variants": {
+            "50g": {
+                "price": 500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+            },
+            "100g": {
+                "price": 900,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/008000\/008000\/300x300.png?text=green"
+            }
+        },
+        "tags": [
+            "お茶"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "hat006": {
+        "name": "キャップ",
+        "description": "かっこいいキャップ。",
+        "lead": "キャップだよ！",
+        "category": "衣類",
+        "is_public": false,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "黒"
+        ],
+        "attributes": {
+            "カラー": [
+                "black"
+            ]
+        },
+        "variants": {
+            "black": {
+                "price": 2000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+            }
+        },
+        "tags": [
+            "帽子"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "cake007": {
+        "name": "チョコケーキ",
+        "description": "甘いチョコケーキ。",
+        "lead": "ケーキだよ！",
+        "category": "お菓子",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/8b4513\/8b4513\/300x300.png?text=choco"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "チョコ"
+        ],
+        "attributes": {
+            "サイズ": [
+                "小",
+                "大"
+            ]
+        },
+        "variants": {
+            "小": {
+                "price": 700,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/8b4513\/8b4513\/300x300.png?text=choco"
+            },
+            "大": {
+                "price": 1200,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/8b4513\/8b4513\/300x300.png?text=choco"
+            }
+        },
+        "tags": [
+            "ケーキ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "bag008": {
+        "name": "トートバッグ",
+        "description": "便利なトートバッグ。",
+        "lead": "バッグだよ！",
+        "category": "雑貨",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffff00\/ffff00\/300x300.png?text=yellow",
+            "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "黄",
+            "青"
+        ],
+        "attributes": {
+            "カラー": [
+                "yellow",
+                "blue"
+            ]
+        },
+        "variants": {
+            "yellow": {
+                "price": 2500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffff00\/ffff00\/300x300.png?text=yellow"
+            },
+            "blue": {
+                "price": 2600,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            }
+        },
+        "tags": [
+            "バッグ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "pen009": {
+        "name": "ボールペン",
+        "description": "書きやすいペン。",
+        "lead": "ペンだよ！",
+        "category": "文具",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default"
+        ],
+        "image_descriptions": [
+            "デフォルト"
+        ],
+        "attributes": [],
+        "variants": {
+            "単品": {
+                "price": 300,
+                "sold_out": false,
+                "image": null
+            }
+        },
+        "tags": [
+            "文具"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "watch010": {
+        "name": "腕時計",
+        "description": "おしゃれな時計。",
+        "lead": "時計だよ！",
+        "category": "アクセサリー",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/c0c0c0\/c0c0c0\/300x300.png?text=silver",
+            "https:\/\/placehold.jp\/ffd700\/ffd700\/300x300.png?text=gold"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "シルバー",
+            "ゴールド"
+        ],
+        "attributes": {
+            "カラー": [
+                "silver",
+                "gold"
+            ],
+            "サイズ": [
+                "S",
+                "M"
+            ]
+        },
+        "variants": {
+            "silver-S": {
+                "price": 5000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/c0c0c0\/c0c0c0\/300x300.png?text=silver"
+            },
+            "silver-M": {
+                "price": 5100,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/c0c0c0\/c0c0c0\/300x300.png?text=silver"
+            },
+            "gold-S": {
+                "price": 5500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffd700\/ffd700\/300x300.png?text=gold"
+            },
+            "gold-M": {
+                "price": 5600,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffd700\/ffd700\/300x300.png?text=gold"
+            }
+        },
+        "tags": [
+            "時計"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "juice011": {
+        "name": "オレンジジュース",
+        "description": "さわやかなジュース。",
+        "lead": "ジュースだよ！",
+        "category": "飲料",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "オレンジ"
+        ],
+        "attributes": {
+            "容量": [
+                "500ml",
+                "1000ml"
+            ]
+        },
+        "variants": {
+            "500ml": {
+                "price": 200,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange"
+            },
+            "1000ml": {
+                "price": 350,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange"
+            }
+        },
+        "tags": [
+            "ジュース"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "chair012": {
+        "name": "木の椅子",
+        "description": "シンプルな椅子。",
+        "lead": "椅子だよ！",
+        "category": "家具",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/8b4513\/8b4513\/300x300.png?text=brown"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "茶"
+        ],
+        "attributes": {
+            "カラー": [
+                "brown"
+            ]
+        },
+        "variants": {
+            "brown": {
+                "price": 4000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/8b4513\/8b4513\/300x300.png?text=brown"
+            }
+        },
+        "tags": [
+            "家具"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "lamp013": {
+        "name": "デスクランプ",
+        "description": "明るいランプ。",
+        "lead": "ランプだよ！",
+        "category": "雑貨",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "白"
+        ],
+        "attributes": [],
+        "variants": {
+            "単品": {
+                "price": 2500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+            }
+        },
+        "tags": [
+            "ランプ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "soap014": {
+        "name": "ハンドソープ",
+        "description": "いい香りのソープ。",
+        "lead": "ソープだよ！",
+        "category": "雑貨",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffc107\/ffc107\/300x300.png?text=yellow",
+            "https:\/\/placehold.jp\/00ff00\/00ff00\/300x300.png?text=green"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "黄",
+            "緑"
+        ],
+        "attributes": {
+            "香り": [
+                "lemon",
+                "lime"
+            ]
+        },
+        "variants": {
+            "lemon": {
+                "price": 400,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffc107\/ffc107\/300x300.png?text=yellow"
+            },
+            "lime": {
+                "price": 450,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/00ff00\/00ff00\/300x300.png?text=green"
+            }
+        },
+        "tags": [
+            "ソープ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "mug015": {
+        "name": "マグカップ",
+        "description": "かわいいマグ。",
+        "lead": "マグだよ！",
+        "category": "雑貨",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ff69b4\/ff69b4\/300x300.png?text=pink",
+            "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "ピンク",
+            "青"
+        ],
+        "attributes": {
+            "カラー": [
+                "pink",
+                "blue"
+            ]
+        },
+        "variants": {
+            "pink": {
+                "price": 600,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff69b4\/ff69b4\/300x300.png?text=pink"
+            },
+            "blue": {
+                "price": 650,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            }
+        },
+        "tags": [
+            "マグ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "sock016": {
+        "name": "靴下セット",
+        "description": "暖かい靴下。",
+        "lead": "靴下だよ！",
+        "category": "衣類",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/808080\/808080\/300x300.png?text=gray",
+            "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "灰",
+            "黒"
+        ],
+        "attributes": {
+            "カラー": [
+                "gray",
+                "black"
+            ],
+            "サイズ": [
+                "S",
+                "M"
+            ]
+        },
+        "variants": {
+            "gray-S": {
+                "price": 300,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/808080\/808080\/300x300.png?text=gray"
+            },
+            "gray-M": {
+                "price": 350,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/808080\/808080\/300x300.png?text=gray"
+            },
+            "black-S": {
+                "price": 320,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+            },
+            "black-M": {
+                "price": 370,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/000000\/000000\/300x300.png?text=black"
+            }
+        },
+        "tags": [
+            "靴下"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "candy017": {
+        "name": "キャンディ",
+        "description": "甘いキャンディ。",
+        "lead": "キャンディだよ",
+        "category": "お菓子",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "赤"
+        ],
+        "attributes": {
+            "味": [
+                "red"
+            ]
+        },
+        "variants": {
+            "red": {
+                "price": 100,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+            }
+        },
+        "tags": [
+            "キャンディ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "note018": {
+        "name": "ノート",
+        "description": "使いやすいノート。",
+        "lead": "ノートだよ！",
+        "category": "文具",
+        "is_public": false,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default"
+        ],
+        "image_descriptions": [
+            "デフォルト"
+        ],
+        "attributes": [],
+        "variants": {
+            "単品": {
+                "price": 200,
+                "sold_out": false,
+                "image": null
+            }
+        },
+        "tags": [
+            "文具"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "pillow019": {
+        "name": "枕",
+        "description": "ふわふわの枕。",
+        "lead": "枕だよ！",
+        "category": "家具",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "白"
+        ],
+        "attributes": {
+            "サイズ": [
+                "S",
+                "L"
+            ]
+        },
+        "variants": {
+            "S": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+            },
+            "L": {
+                "price": 1500,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ffffff\/ffffff\/300x300.png?text=white"
+            }
+        },
+        "tags": [
+            "枕"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "toy020": {
+        "name": "おもちゃセット",
+        "description": "楽しいおもちゃ。",
+        "lead": "おもちゃだよ！",
+        "category": "おもちゃ",
+        "is_public": true,
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+        "images": [
+            "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
+            "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red",
+            "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+        ],
+        "image_descriptions": [
+            "デフォルト",
+            "赤",
+            "青"
+        ],
+        "attributes": {
+            "カラー": [
+                "red",
+                "blue"
+            ]
+        },
+        "variants": {
+            "red": {
+                "price": 800,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/ff0000\/ff0000\/300x300.png?text=red"
+            },
+            "blue": {
+                "price": 850,
+                "sold_out": false,
+                "image": "https:\/\/placehold.jp\/0000ff\/0000ff\/300x300.png?text=blue"
+            }
+        },
+        "tags": [
+            "おもちゃ"
+        ],
+        "registered_date": "2025-03-06"
+    },
+    "pro0001": {
+        "default_image": "https:\/\/placehold.jp\/300x300.png",
+        "name": "iPhone3GS",
+        "description": "<p>最新のiPhoneです。すごくいいよ。完璧<\/p>",
+        "lead": "でた3GS",
+        "category": "スマートフォン",
+        "is_public": true,
+        "images": [
+            "https:\/\/placehold.jp\/300x300.png",
+            "uploads\/67c774b1e875a_character_01_btn_on.png",
+            "uploads\/67c77a0b09516_character_02_btn.png",
+            "uploads\/67c77a1e1338b_character_05_btn.png",
+            "uploads\/67c77a3a5d00b_character_03_btn.png",
+            "uploads\/67c77a4778dcb_character_04_btn.png",
+            "uploads\/67c77aa13268d_p_02_style1-1_pc.png"
+        ],
+        "image_descriptions": [
+            "デフォルト画像",
+            "キュアスカイ",
+            "キュアプリズム",
+            "キュアマジェスティ",
+            "キュアバタフライ",
+            "キュアウイング",
+            "スカイ全身"
+        ],
+        "attributes": {
+            "容量": [
+                "16GB",
+                "32GB",
+                "64GB"
+            ],
+            "カラー": [
+                "白",
+                "シルバー"
+            ]
+        },
+        "variants": {
+            "16GB-白": {
+                "price": 12000,
+                "sold_out": false,
+                "image": "uploads\/67c774b1e875a_character_01_btn_on.png"
+            },
+            "16GB-シルバー": {
+                "price": 22000,
+                "sold_out": false,
+                "image": "uploads\/67c77a0b09516_character_02_btn.png"
+            },
+            "32GB-白": {
+                "price": 32000,
+                "sold_out": false,
+                "image": "uploads\/67c77a1e1338b_character_05_btn.png"
+            },
+            "32GB-シルバー": {
+                "price": 12000,
+                "sold_out": true,
+                "image": "uploads\/67c77a3a5d00b_character_03_btn.png"
+            },
+            "64GB-白": {
+                "price": 32000,
+                "sold_out": false,
+                "image": "uploads\/67c77a4778dcb_character_04_btn.png"
+            },
+            "64GB-シルバー": {
+                "price": 32000,
+                "sold_out": true,
+                "image": "uploads\/67c77aa13268d_p_02_style1-1_pc.png"
+            }
+        },
+        "tags": [
+            "iphone",
+            "3GS"
+        ],
+        "registered_date": "2025-03-04"
+    }
+}
