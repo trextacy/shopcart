@@ -1,0 +1,29 @@
+Before update: Array
+(
+    [0] => Array
+        (
+            [product_id] => fpu-0001
+            [quantity] => 1
+            [variant] => 2TB-黒
+        )
+
+)
+
+After update: Array
+(
+    [0] => Array
+        (
+            [product_id] => fpu-0001
+            [quantity] => 1
+            [variant] => 2TB-黒
+        )
+
+    [1] => Array
+        (
+            [product_id] => noimage
+            [quantity] => 1
+            [variant] => 透明
+        )
+
+)
+
