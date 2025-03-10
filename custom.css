@@ -1,0 +1,17 @@
+/* Error: This module and the new module both define a variable named "$primary".
+ *    ,
+ * 16 | @use "./node_modules/bootstrap/scss/bootstrap" as *;
+ *    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   custom.scss 16:1  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: This module and the new module both define a variable named "$primary".\a    \2577 \a 16 \2502  @use "./node_modules/bootstrap/scss/bootstrap" as *;\d\a    \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   custom.scss 16:1  root stylesheet';
+}

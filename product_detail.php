@@ -18,7 +18,7 @@ if (!isset($products[$product_id]) || (isset($products[$product_id]['is_public']
         <main class="flex-grow-1">
             <div class="container py-5 text-center">
                 <h1 class="mb-4">商品が見つかりません</h1>
-                <p class="text-muted mb-4">お探しの商品は現在ご覧いただけません。商品一覧から他の商品をご覧ください。</p>
+                <p class="mb-4">お探しの商品は現在ご覧いただけません。商品一覧から他の商品をご覧ください。</p>
                 <a href="index.php" class="btn btn-primary">商品一覧に戻る</a>
             </div>
         </main>
@@ -89,8 +89,9 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
         </div>
         <button type="submit" class="btn btn-primary btn-lg w-100 <?php echo $all_sold_out ? 'btn-secondary disabled' : ''; ?>" <?php echo $all_sold_out ? 'disabled' : ''; ?>>カートに追加</button>
     </form>
-    <div class="product-description text-muted"><?php echo $product['description']; ?></div>
 </div>
+    <div class="product-description"><?php echo $product['description']; ?></div>
+
             </div>
         </div>
 
@@ -110,7 +111,7 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
                                         <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
                                              class="img-fluid" 
                                              alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <p class="text-center mt-2 text-muted"><?php echo htmlspecialchars($product['image_descriptions'][$index] ?? '画像 ' . ($index + 1), ENT_QUOTES, 'UTF-8'); ?></p>
+                                        <p class="text-center mt-2"><?php echo htmlspecialchars($product['image_descriptions'][$index] ?? '画像 ' . ($index + 1), ENT_QUOTES, 'UTF-8'); ?></p>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -130,27 +131,6 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="<?php echo $base_path; ?>js/common.js"></script>
 <script>
-
-// variants.phpの魔法をここでも使えるようにするよ
-// 元の定義を削除してた部分を戻す
-function get_variant_key(selected) {
-    return Object.values(selected).join('-');
-}
-
-function get_variant_image(product, variantKey) {
-    const variants = product.variants || {};
-    const default_image = product.default_image || (product.images[0] || 'https://placehold.jp/300x300.png');
-    if (variants[variantKey] && variants[variantKey].image && variants[variantKey].image !== '') {
-        return variants[variantKey].image;
-    }
-    return default_image;
-}
-
-function is_variant_available(product, variantKey) {
-    const variants = product.variants || {};
-    return variants[variantKey] && !variants[variantKey].sold_out;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const productSwiper = new Swiper('.productSwiper', {
         loop: false,
@@ -158,71 +138,40 @@ document.addEventListener('DOMContentLoaded', () => {
         navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
     });
 
+    const modalSwiper = new Swiper('.modalSwiper', {
+        loop: false,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    });
+
     const form = document.getElementById('productForm');
-    const selects = form.querySelectorAll('.variant-select');
     const priceDisplay = document.getElementById('selected-price');
     const product = <?php echo json_encode($product, JSON_UNESCAPED_UNICODE); ?>;
     const minPrice = <?php echo $min_price ? $min_price : 0; ?>;
 
-    function updatePriceAndImage() {
-        const selected = {};
-        selects.forEach(select => {
-            if (select.value) selected[select.getAttribute('data-attr')] = select.value;
-        });
-        const variantKey = get_variant_key(selected);
-        const variant = product.variants[variantKey];
-        const price = variant && !variant.sold_out ? variant.price : null;
-        const image = get_variant_image(product, variantKey);
+    // Button Group初期化時にすべての引数を渡す
+    initializeVariantButtons(form, priceDisplay, productSwiper, product, minPrice, true);
 
-        priceDisplay.textContent = price ? `${price.toLocaleString()}円` : `${minPrice.toLocaleString()}円～`;
+    const selects = form.querySelectorAll('.variant-select');
+    selects.forEach(select => {
+        if (select.tagName === 'SELECT') {
+            select.addEventListener('change', () => {
+                updatePriceAndImage(form, priceDisplay, productSwiper, product, minPrice, true);
+            });
+        }
+    });
 
-        const slides = document.querySelectorAll('.productSwiper .swiper-slide');
-        let targetIndex = 0;
-        slides.forEach((slide, index) => {
-            const imgSrc = slide.querySelector('img').src;
-            if (imgSrc.includes(image)) {
-                targetIndex = index;
-            }
-        });
-        productSwiper.slideTo(targetIndex);
-    }
+    // 初期更新
+    updatePriceAndImage(form, priceDisplay, productSwiper, product, minPrice, true);
 
-    selects.forEach(select => select.addEventListener('change', updatePriceAndImage));
-    updatePriceAndImage();
-
+    // フォーム送信時のバリデーション
     form.addEventListener('submit', function(e) {
-        let allSelected = true;
-        selects.forEach(select => {
-            if (!select.value) allSelected = false;
-        });
-        if (!allSelected) {
+        if (!validateForm(form, product)) {
             e.preventDefault();
-            alert('全部選んでね！');
-            return;
-        }
-        const selected = {};
-        selects.forEach(select => {
-            if (select.value) selected[select.getAttribute('data-attr')] = select.value;
-        });
-        const variantKey = get_variant_key(selected);
-        if (!is_variant_available(product, variantKey)) {
-            e.preventDefault();
-            alert('ごめんね、在庫がないよ…');
         }
     });
 
-    const modalSwiper = new Swiper('.modalSwiper', {
-        loop: false,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    });
-
+    // モーダル画像クリック（変更なし）
     document.querySelectorAll('.clickable-image').forEach(img => {
         let touchStartX = 0;
         let touchStartY = 0;
@@ -276,60 +225,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
-<style>
-.price {
-    font-size: 1.5rem;
-    color: #333;
-}
-.product-description ul { margin-left: 20px; }
-.product-description a { color: #007bff; text-decoration: underline; }
-.product-description a:hover { color: #0056b3; }
-.productSwiper .swiper-slide img {
-    max-height: 500px;
-    object-fit: contain;
-    cursor: pointer;
-}
-.modalSwiper .swiper-slide img {
-    max-height: 80vh;
-    object-fit: contain;
-}
-
-/* 修正したCSS */
-.swiper {
-    width: 100%;
-    max-width: 600px;
-    height: 600px;
-}
-.productSwiper .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.productSwiper .swiper-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-.modalSwiper {
-    width: 100%;
-    max-width: 800px; /* モーダルは少し大きめに */
-    height: 80vh; /* 高さを画面に合わせる */
-}
-.modalSwiper .swiper-slide {
-    display: flex;
-    flex-direction: column; /* 縦に並べる */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-.modalSwiper .swiper-slide p {
-    margin-top: 10px; /* 画像との間隔 */
-    font-size: 1rem;
-    color: #666;
-}
-.btn-secondary.disabled {
-    background-color: #ccc;
-    border-color: #ccc;
-    cursor: not-allowed;
-}
-</style>

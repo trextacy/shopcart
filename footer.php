@@ -29,14 +29,6 @@ $categories = array_unique(array_map(fn($p) => $p['category'], load_products()))
                 <a href="#" class="text-white me-3"><i class="bi bi-instagram fs-4"></i></a>
                 <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
             </div>
-            <!-- ニュースレター -->
-            <div class="col-md-3 col-sm-6">
-                <h5 class="mb-3">ニュースレター</h5>
-                <form>
-                    <input type="email" class="form-control mb-2" placeholder="メールアドレス">
-                    <button type="submit" class="btn btn-primary w-100">登録する</button>
-                </form>
-            </div>
         </div>
         <div class="text-center mt-4">
             <p class="mb-0">&copy; 2025 trextacy.com All Rights Reserved.</p>

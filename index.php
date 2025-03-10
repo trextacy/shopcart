@@ -8,22 +8,10 @@ require_once 'plugins/variants.php';
 $base_path = get_base_path();
 generate_csrf_token();
 
-// キャッシュで商品読み込み
-$cache_file = 'cache/products_cache.json';
-if (file_exists($cache_file) && (time() - filemtime($cache_file) < 86400)) {
-    $products = json_decode(file_get_contents($cache_file), true);
-    if ($products === null) {
-        error_log('Failed to decode cache: ' . $cache_file);
-        $products = load_products();
-    }
-} else {
-    $products = load_products();
-    if (is_writable('cache') && !file_put_contents($cache_file, json_encode($products))) {
-        error_log('Failed to write cache: ' . $cache_file);
-    }
-}
+// キャッシュを無効化して直接読み込み
+$products = load_products();
 
-// フィルタリング
+// 以下は既存のフィルタリングとページング
 $filtered_products = array_filter($products, fn($p) => isset($p['is_public']) ? $p['is_public'] : true);
 $selected_category = $_GET['category'] ?? '';
 if ($selected_category) {
@@ -99,77 +87,125 @@ include 'header.php';
     </div>
 
     <div class="container">
+
+
+
         <!-- フィルター -->
-        <div class="mb-4">
-            <h2 class="h4">カテゴリーとソート</h2>
-            <div class="d-flex flex-wrap gap-2 mb-3">
-                <a href="index.php" class="btn btn-outline-primary <?php echo !$selected_category ? 'active' : ''; ?>">ぜんぶ</a>
-                <?php foreach (array_unique(array_filter(array_column($products, 'category'))) as $category): ?>
-                    <a href="index.php?category=<?php echo urlencode($category); ?>" class="btn btn-outline-primary <?php echo $selected_category === $category ? 'active' : ''; ?>">
-                        <?php echo htmlspecialchars($category); ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-            <select name="sort" class="form-select w-auto d-inline-block" onchange="location.href='index.php?sort='+this.value;">
-                <option value="default" <?php echo $sort === 'default' ? 'selected' : ''; ?>>標準</option>
-                <option value="popular" <?php echo $sort === 'popular' ? 'selected' : ''; ?>>人気順</option>
-            </select>
+        <div class="mb-4  border shadow p-3">
+              <div class="d-flex justify-content-between align-items-center mb-2>
+                        <h2 class="h4">カテゴリーからも選べます</h2>
+                        <select name="sort" class="form-select w-auto d-inline-block" onchange="location.href='index.php?sort='+this.value;">
+                            <option value="default" <?php echo $sort === 'default' ? 'selected' : ''; ?>>標準</option>
+                            <option value="popular" <?php echo $sort === 'popular' ? 'selected' : ''; ?>>人気順</option>
+                        </select>
+
+              </div>
+
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <a href="index.php" class="btn btn-outline-primary <?php echo !$selected_category ? 'active' : ''; ?>">全商品</a>
+                            <?php foreach (array_unique(array_filter(array_column($products, 'category'))) as $category): ?>
+                                <a href="index.php?category=<?php echo urlencode($category); ?>" class="btn btn-outline-primary <?php echo $selected_category === $category ? 'active' : ''; ?>">
+                                    <?php echo htmlspecialchars($category); ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
         </div>
 
-        <!-- 商品グリッド -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4" id="product-grid">
-            <?php foreach ($initial_products as $product_id => $product): ?>
-                <?php
-                $variant_prices = array_column(array_filter($product['variants'] ?? [], fn($v) => isset($v['price']) && is_numeric($v['price']) && !$v['sold_out']), 'price');
-                $min_price = !empty($variant_prices) ? min($variant_prices) : ($product['price'] ?? 0);
-                $all_sold_out = empty($variant_prices) && empty($product['price']);
-                ?>
-                <div class="col">
-                    <div class="card product-card border-0 h-100">
-                        <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>">
-                            <div id="carousel-<?php echo htmlspecialchars($product_id); ?>" class="carousel slide">
-                                <div class="carousel-inner">
-                                    <?php foreach ($product['images'] ?? [] as $i => $img): ?>
-                                        <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>" data-image-src="<?php echo htmlspecialchars($img); ?>">
-                                            <img src="<?php echo htmlspecialchars(strpos($img, 'http') === 0 ? $img : $base_path . $img); ?>" 
-                                                 class="d-block w-100 card-img-top" alt="商品画像" loading="lazy">
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                                <?php if (count($product['images'] ?? []) > 1): ?>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<?php echo htmlspecialchars($product_id); ?>" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-<?php echo htmlspecialchars($product_id); ?>" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button>
-                                <?php endif; ?>
+
+
+
+
+
+<!-- 商品グリッド -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4" id="product-grid">
+    <?php foreach ($initial_products as $product_id => $product): ?>
+        <?php
+        $variant_prices = array_column(array_filter($product['variants'] ?? [], fn($v) => isset($v['price']) && is_numeric($v['price']) && !$v['sold_out']), 'price');
+        $min_price = !empty($variant_prices) ? min($variant_prices) : ($product['price'] ?? 0);
+        $all_sold_out = empty($variant_prices) && empty($product['price']);
+        $sold_out_variants = get_sold_out_variants($product); // 在庫切れのバリエーションを取得
+        ?>
+
+
+        <div class="col">
+            <div class="card product-card border-0 h-100 position-relative">
+                <!-- 画像エリア：4:3に -->
+                <div class="position-relative">
+                    <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>">
+                        <div id="carousel-<?php echo htmlspecialchars($product_id); ?>" class="carousel slide">
+                            <div class="carousel-inner" style="aspect-ratio: 4 / 3;">
+                                <?php foreach ($product['images'] ?? [] as $i => $img): ?>
+                                    <div class="carousel-item <?php echo $i === 0 ? 'active' : ''; ?>" data-image-src="<?php echo htmlspecialchars($img); ?>">
+                                        <img src="<?php echo htmlspecialchars(strpos($img, 'http') === 0 ? $img : $base_path . $img); ?>" 
+                                             class="d-block w-100 card-img-top object-fit-cover" alt="商品画像" loading="lazy">
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                        </a>
-                        <div class="card-body text-center d-flex flex-column">
-                            <h5 class="card-title mb-2">
-                                <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>" class="text-dark text-decoration-none">
-                                    <?php echo htmlspecialchars($product['name'] ?? '商品名不明'); ?>
-                                </a>
-                            </h5>
-                            <div class="card-text text-muted mb-2 text-truncate"><?php echo htmlspecialchars($product['lead'] ?? mb_substr(strip_tags($product['description'] ?? ''), 0, 20) . '...'); ?></div>
-                            <p class="price fw-bold mb-2 <?php echo $all_sold_out ? 'sold-out' : ''; ?>" data-min-price="<?php echo $min_price; ?>">
-                                <?php echo $all_sold_out ? '売り切れ' : number_format($min_price) . '円～'; ?>
-                            </p>
-                            <form method="post" action="cart.php?action=add" onsubmit="return validateForm(this)" class="mt-auto" data-product='<?php echo json_encode($product, JSON_UNESCAPED_UNICODE); ?>'>
-                                <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id); ?>">
-                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                                <div class="variant-options mb-2"><?php echo display_variant_options($product); ?></div>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button type="submit" class="btn btn-primary btn-sm <?php echo $all_sold_out ? 'disabled' : ''; ?>" <?php echo $all_sold_out ? 'disabled' : ''; ?>>カートに追加</button>
-                                    <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>" class="btn btn-outline-secondary btn-sm">詳細</a>
-                                </div>
-                            </form>
+                            <?php if (count($product['images'] ?? []) > 1): ?>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<?php echo htmlspecialchars($product_id); ?>" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-<?php echo htmlspecialchars($product_id); ?>" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            <?php endif; ?>
                         </div>
-                    </div>
+                    </a>
+                    
+                    <!-- 商品名：画像の上に白い帯で -->
+                    <h5 class="card-title position-absolute top-0 start-0 w-100 p-2 mb-0 bg-white bg-opacity-75 text-dark fw-medium fs-5">
+                        <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>" class="text-decoration-none text-dark">
+                            <?php echo htmlspecialchars($product['name'] ?? '商品名不明'); ?>
+                        </a>
+                    </h5>
+                    
+                    <!-- 価格：画像の右下に白い窓で黒文字 -->
+                    <p class="price position-absolute bottom-0 end-0 m-2 p-1 bg-white text-dark fw-bold rounded <?php echo $all_sold_out ? 'sold-out' : ''; ?>" data-min-price="<?php echo $min_price; ?>">
+                        <?php echo $all_sold_out ? '売り切れ' : number_format($min_price) . '円～'; ?>
+                    </p>
                 </div>
-            <?php endforeach; ?>
+
+                <!-- カード本体 -->
+                <div class="card-body text-center d-flex flex-column p-3">
+                    <!-- 説明：画像の下に -->
+                    <div class="card-text text-muted mb-2 text-truncate">
+                        <?php echo htmlspecialchars($product['lead'] ?? mb_substr(strip_tags($product['description'] ?? ''), 0, 20) . '...'); ?>
+                    </div>
+                    
+                    <!-- 在庫切れのバリエーションを表示 -->
+                    <?php if (!empty($sold_out_variants)): ?>
+                        <p class="text-danger small mb-2">在庫切れ: <?php echo htmlspecialchars(implode(', ', $sold_out_variants)); ?></p>
+                    <?php endif; ?>
+                    
+                    <!-- フォーム：プルダウンとボタンを左右に -->
+                    <form method="post" action="cart.php?action=add" onsubmit="return validateForm(this)" class="mt-auto" data-product='<?php echo json_encode($product, JSON_UNESCAPED_UNICODE); ?>'>
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id); ?>">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                        
+                        <div class="row">
+                            <!-- プルダウン：左側（col-6） -->
+                            <div class="col-6 align-self-center">
+                                <div class="variant-options"><?php echo display_variant_options($product); ?></div>
+                            </div>
+                            
+                            <!-- ボタン：右側（col-6）に固定幅 -->
+                            <div class="col-6 d-flex justify-content-end align-self-center">
+                                <div class="button-group d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary btn-sm flex-fill <?php echo $all_sold_out ? 'disabled' : ''; ?>" <?php echo $all_sold_out ? 'disabled' : ''; ?>>
+                                        カートに追加
+                                    </button>
+                                    <a href="product_detail.php?product_id=<?php echo htmlspecialchars($product_id); ?>" class="btn btn-outline-secondary btn-sm flex-fill">
+                                        詳細
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
+    <?php endforeach; ?>
+</div>
 
         <!-- ページング -->
         <?php if ($total_pages > 1): ?>
@@ -195,81 +231,43 @@ include 'header.php';
 </div>
 
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="<?php echo $base_path; ?>js/common.js"></script>
 <script>
-const swiper = new Swiper('.mySwiper', {
-    loop: true,
-    pagination: { el: '.swiper-pagination', clickable: true },
-    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-});
-
-function get_variant_image(product, variantKey) {
-    const variants = product.variants || {};
-    return variants[variantKey]?.image || product.images?.[0] || 'https://placehold.jp/300x300.png';
-}
-
-function updatePriceAndImage(form) {
-    const selects = form.querySelectorAll('.variant-select');
-    const product = JSON.parse(form.getAttribute('data-product'));
-    const priceDisplay = form.closest('.product-card').querySelector('.price');
-    const carousel = form.closest('.product-card').querySelector('.carousel');
-    const selected = {};
-    selects.forEach(s => { if (s.value) selected[s.getAttribute('data-attr')] = s.value; });
-    const variantKey = Object.values(selected).join('-');
-    const variant = product.variants?.[variantKey];
-    const price = variant && !variant.sold_out ? variant.price : null;
-    const minPrice = parseInt(priceDisplay.getAttribute('data-min-price')) || 0;
-    priceDisplay.textContent = price ? `${price.toLocaleString()}円` : `${minPrice.toLocaleString()}円～`;
-    let targetIndex = 0; // 関数スコープで定義
-    if (carousel) {
-        const items = carousel.querySelectorAll('.carousel-item');
-        items.forEach((item, i) => { 
-            if (item.getAttribute('data-image-src') === get_variant_image(product, variantKey)) {
-                targetIndex = i;
-            }
-        });
-        bootstrap.Carousel.getOrCreateInstance(carousel, { interval: false }).to(targetIndex);
-    }
-    console.log(`Updated form: VariantKey=${variantKey}, Price=${price || minPrice}, CarouselIndex=${targetIndex}`);
-}
-
-function validateForm(form) {
-    const selects = form.querySelectorAll('.variant-select');
-    if (Array.from(selects).some(s => !s.value)) {
-        alert('すべてのオプションを選んでね！');
-        return false;
-    }
-    const product = JSON.parse(form.getAttribute('data-product'));
-    const variantKey = getVariantKey(form);
-    if (!product.variants?.[variantKey] || product.variants[variantKey].sold_out) {
-        alert('ごめんね、在庫がないよ…');
-        return false;
-    }
-    form.querySelector('.btn-primary').classList.add('fly-to-cart');
-    setTimeout(() => form.querySelector('.btn-primary').classList.remove('fly-to-cart'), 1000);
-    return true;
-}
-
-function getVariantKey(form) {
-    const selects = form.querySelectorAll('.variant-select');
-    const selected = {};
-    selects.forEach(s => { if (s.value) selected[s.getAttribute('data-attr')] = s.value; });
-    return Object.values(selected).join('-');
-}
-
-// ページ読み込み時に各フォームを初期化し、イベントリスナーを設定
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Initializing variant options');
+    const swiper = new Swiper('.mySwiper', {
+        loop: true,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    });
+
     const forms = document.querySelectorAll('.product-card form');
     forms.forEach(form => {
+        const priceDisplay = form.closest('.product-card').querySelector('.price');
+        const carousel = form.closest('.product-card')?.querySelector('.carousel');
+        const product = JSON.parse(form.getAttribute('data-product')); // productデータを取得
+        const minPrice = parseInt(priceDisplay.getAttribute('data-min-price')) || 0;
+
+        // Button Group初期化時にすべての引数を渡す
+        initializeVariantButtons(form, priceDisplay, carousel, product, minPrice);
+
         const selects = form.querySelectorAll('.variant-select');
-        // 初期表示を更新
-        updatePriceAndImage(form);
-        // 各<select>にchangeイベントリスナーを追加
         selects.forEach(select => {
-            select.addEventListener('change', () => {
-                console.log(`Select changed: ${select.getAttribute('data-attr')} = ${select.value}`);
-                updatePriceAndImage(form);
-            });
+            if (select.tagName === 'SELECT') {
+                select.addEventListener('change', () => updatePriceAndImage(form, priceDisplay, carousel, product, minPrice));
+            }
+        });
+
+        // 初期更新
+        updatePriceAndImage(form, priceDisplay, carousel, product, minPrice);
+
+        // フォーム送信時のバリデーション
+        form.addEventListener('submit', function(e) {
+            if (!validateForm(form, product)) {
+                e.preventDefault();
+                return;
+            }
+            form.querySelector('.btn-primary').classList.add('fly-to-cart');
+            setTimeout(() => form.querySelector('.btn-primary').classList.remove('fly-to-cart'), 1000);
         });
     });
 });

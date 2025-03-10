@@ -86,75 +86,78 @@ include 'header_admin.php';
     <?php else: ?>
         <div class="card cure-majesty-card shadow-sm">
             <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 cure-majesty-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="ps-3" style="min-width: 150px;">商品名だよ</th>
-                                <th scope="col" style="min-width: 100px;">リード文だよ</th>
-                                <th scope="col" style="min-width: 200px;">説明だよ</th>
-                                <th scope="col" style="min-width: 120px;">カテゴリーだよ</th>
-                                <th scope="col" style="min-width: 150px;">属性だよ</th>
-                                <th scope="col" style="min-width: 120px;">タグだよ</th>
-                                <th scope="col" style="min-width: 150px;">バリアントだよ</th>
-                                <th scope="col" style="min-width: 180px;">操作だよ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($products as $product_id => $product): ?>
-                                <tr class="cure-majesty-row">
-                                    <td class="ps-3 align-middle"><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td class="align-middle"><?php echo htmlspecialchars($product['lead'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td class="align-middle"><?php echo htmlspecialchars(mb_strimwidth($product['description'], 0, 50, '...', 'UTF-8'), ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td class="align-middle"><?php echo htmlspecialchars($product['category'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td class="align-middle">
-                                        <?php
-                                        foreach ($product['attributes'] as $attr_name => $attr_data) {
-                                            $values = $attr_data['values'] ?? [];
-                                            echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8') . ': ' . implode(', ', array_map('htmlspecialchars', $values)) . '<br>';
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="align-middle"><?php echo htmlspecialchars(implode(', ', $product['tags'] ?? []), ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td class="align-middle">
-                                        <button class="btn btn-link p-0 text-decoration-none cure-majesty-link" type="button" data-bs-toggle="collapse" data-bs-target="#variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="false" aria-controls="variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
-                                            <?php echo count($product['variants']); ?>件 <i class="bi bi-chevron-down"></i>
-                                        </button>
-                                        <div class="collapse" id="variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
-                                            <ul class="list-unstyled mt-2">
-                                                <?php foreach ($product['variants'] as $variant_key => $variant): ?>
-                                                    <li class="mb-1 d-flex align-items-center">
-                                                        <span class="me-2"><?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?> - <?php echo number_format($variant['price']); ?>円</span>
-                                                        <input type="checkbox" 
-                                                               class="form-check-input toggle-sold-out" 
-                                                               data-product-id="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" 
-                                                               data-variant-key="<?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?>" 
-                                                               <?php echo $variant['sold_out'] ? 'checked' : ''; ?>>
-                                                        <label class="form-check-label ms-1"><?php echo $variant['sold_out'] ? '売り切れだよ' : '在庫ありだよ'; ?></label>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="product_edit.php?product_id=<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-sm mb-2 w-100 cure-majesty-btn-edit">編集だよ♪</a>
-                                        <form method="post" onsubmit="return confirm('本当に削除する？');">
-                                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
-                                            <button type="submit" name="delete_product" class="btn btn-sm w-100 cure-majesty-btn-danger">削除だよ</button>
-                                        </form>
-                                        <div class="form-check form-switch mt-2">
-                                            <input type="checkbox" 
-                                                   class="form-check-input toggle-public" 
-                                                   data-product-id="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" 
-                                                   <?php echo ($product['is_public'] ?? true) ? 'checked' : ''; ?>>
-                                            <label class="form-check-label"><?php echo ($product['is_public'] ?? true) ? '公開だよ' : '非公開だよ'; ?></label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+<div class="table-responsive">
+    <table class="table table-hover mb-0 cure-majesty-table">
+        <thead>
+            <tr>
+                <th scope="col" class="ps-3" style="min-width: 150px;">商品名だよ</th>
+                <th scope="col" style="min-width: 100px;">リード文だよ</th>
+                <th scope="col" style="min-width: 200px;">説明だよ</th>
+                <th scope="col" style="min-width: 120px;">カテゴリーだよ</th>
+                <th scope="col" style="min-width: 150px;">属性だよ</th>
+                <th scope="col" style="min-width: 120px;">タグだよ</th>
+                <th scope="col" style="min-width: 120px;">選択形式だよ</th> <!-- 追加 -->
+                <th scope="col" style="min-width: 150px;">バリアントだよ</th>
+                <th scope="col" style="min-width: 180px;">操作だよ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($products as $product_id => $product): ?>
+                <tr class="cure-majesty-row">
+                    <td class="ps-3 align-middle"><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="align-middle"><?php echo htmlspecialchars($product['lead'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="align-middle"><?php echo htmlspecialchars(mb_strimwidth($product['description'], 0, 50, '...', 'UTF-8'), ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="align-middle"><?php echo htmlspecialchars($product['category'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="align-middle">
+                        <?php
+                        foreach ($product['attributes'] as $attr_name => $attr_data) {
+                            $values = $attr_data['values'] ?? [];
+                            echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8') . ': ' . implode(', ', array_map('htmlspecialchars', $values)) . '<br>';
+                        }
+                        ?>
+                    </td>
+                    <td class="align-middle"><?php echo htmlspecialchars(implode(', ', $product['tags'] ?? []), ENT_QUOTES, 'UTF-8'); ?></td>
+                    <!-- 追加: 選択形式表示 -->
+                    <td class="align-middle"><?php echo htmlspecialchars($product['variant_display'] ?? 'select', ENT_QUOTES, 'UTF-8') === 'button_group' ? 'Button Group' : 'Select'; ?></td>
+                    <td class="align-middle">
+                        <button class="btn btn-link p-0 text-decoration-none cure-majesty-link" type="button" data-bs-toggle="collapse" data-bs-target="#variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" aria-expanded="false" aria-controls="variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
+                            <?php echo count($product['variants']); ?>件 <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="collapse" id="variants-<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
+                            <ul class="list-unstyled mt-2">
+                                <?php foreach ($product['variants'] as $variant_key => $variant): ?>
+                                    <li class="mb-1 d-flex align-items-center">
+                                        <span class="me-2"><?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?> - <?php echo number_format($variant['price']); ?>円</span>
+                                        <input type="checkbox" 
+                                               class="form-check-input toggle-sold-out" 
+                                               data-product-id="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" 
+                                               data-variant-key="<?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?>" 
+                                               <?php echo $variant['sold_out'] ? 'checked' : ''; ?>>
+                                        <label class="form-check-label ms-1"><?php echo $variant['sold_out'] ? '売り切れだよ' : '在庫ありだよ'; ?></label>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <a href="product_edit.php?product_id=<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-sm mb-2 w-100 cure-majesty-btn-edit">編集だよ♪</a>
+                        <form method="post" onsubmit="return confirm('本当に削除する？');">
+                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
+                            <button type="submit" name="delete_product" class="btn btn-sm w-100 cure-majesty-btn-danger">削除だよ</button>
+                        </form>
+                        <div class="form-check form-switch mt-2">
+                            <input type="checkbox" 
+                                   class="form-check-input toggle-public" 
+                                   data-product-id="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>" 
+                                   <?php echo ($product['is_public'] ?? true) ? 'checked' : ''; ?>>
+                            <label class="form-check-label"><?php echo ($product['is_public'] ?? true) ? '公開だよ' : '非公開だよ'; ?></label>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
             </div>
         </div>
     <?php endif; ?>

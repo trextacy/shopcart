@@ -63,7 +63,7 @@ include 'header_admin.php';
         <p class="text-danger cure-prism-error"><?php echo $result['message']; ?></p>
     <?php endif; ?>
 
-    <form method="post" enctype="multipart/form-data" id="productForm" onsubmit="return false;" class="cure-prism-form">
+    <form method="post" enctype="multipart/form-data" id="productForm" onsubmit="handleFormSubmit(event)">
         <div class="mb-3">
             <label for="product_id" class="form-label">商品ID（半角英数字）だよ</label>
             <input type="text" class="form-control cure-prism-input" id="product_id" name="product_id" placeholder="例: product01" required>
@@ -90,20 +90,24 @@ include 'header_admin.php';
             <small class="text-muted">商品のカテゴリーを入力してね（任意だよ）。</small>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">属性（例: サイズ、カラーなど）と画像だよ</label>
-            <div id="attr-container" class="cure-prism-container">
-                <div class="attr-entry mb-3 cure-prism-entry">
-                    <div class="d-flex mb-2">
-                        <input type="text" class="form-control cure-prism-input me-2" name="attr_name[]" placeholder="属性名 (例: サイズ)" required>
-                        <input type="text" class="form-control cure-prism-input me-2" name="attr_values[]" placeholder="値 (例: S, M, LL)" required oninput="updateAttrValueImages(this, 0)">
-                        <button type="button" class="btn btn-danger cure-prism-btn-danger" onclick="this.parentElement.parentElement.remove()">削除だよ</button>
-                    </div>
-                    <div class="attr-values-images" data-attr-index="0"></div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-outline-secondary cure-prism-btn" onclick="addAttrEntry()">属性を追加だよ♪</button>
-        </div>
+<div class="mb-3">
+    <label class="form-label">属性（例: サイズ、カラーなど）と画像だよ</label>
+    <div id="attr-container" class="cure-prism-container">
+<div class="attr-entry mb-3 cure-prism-entry">
+    <div class="d-flex mb-2">
+        <input type="text" class="form-control cure-prism-input me-2" name="attr_name[]" placeholder="属性名 (例: サイズ)" required>
+        <input type="text" class="form-control cure-prism-input me-2" name="attr_values[]" placeholder="値 (例: S, M, LL)" required oninput="updateAttrValueImages(this, 0)">
+        <button type="button" class="btn btn-danger cure-prism-btn-danger" onclick="this.parentElement.parentElement.remove()">削除だよ</button>
+    </div>
+    <div class="form-check mb-2">
+        <input type="checkbox" class="form-check-input" name="variant_display[0]" id="variant_display_0" value="button_group">
+        <label class="form-check-label" for="variant_display_0">Button Groupにするよ♪</label>
+    </div>
+    <div class="attr-values-images" data-attr-index="0"></div>
+</div>
+    </div>
+    <button type="button" class="btn btn-outline-secondary cure-prism-btn" onclick="addAttrEntry()">属性を追加だよ♪</button>
+</div>
 
         <div class="mb-3">
             <label class="form-label">バリアント（組み合わせごとの価格と在庫だよ♪）</label>
@@ -132,12 +136,12 @@ include 'header_admin.php';
             <input type="text" class="form-control cure-prism-input" id="tags" name="tags" placeholder="例: Tシャツ, カジュアル">
         </div>
 
-        <div class="mt-4">
-            <button type="button" id="submitButton" class="btn btn-primary cure-prism-btn-primary">商品を登録だよ♪</button>
-            <a href="product_list.php" class="btn btn-info cure-prism-btn ms-2">商品リストを見るよ♪</a>
-            <a href="logout.php" class="btn btn-secondary cure-prism-btn ms-2">ログアウトだよ♪</a>
-        </div>
-    </form>
+    <div class="mt-4">
+        <button type="submit" id="submitButton" class="btn btn-primary cure-prism-btn-primary">商品を登録だよ♪</button>
+        <a href="product_list.php" class="btn btn-info cure-prism-btn ms-2">商品リストを見るよ♪</a>
+        <a href="logout.php" class="btn btn-secondary cure-prism-btn ms-2">ログアウトだよ♪</a>
+    </div>
+</form>
 </div>
 
 <script>
@@ -153,6 +157,10 @@ function addAttrEntry() {
             <input type="text" class="form-control cure-prism-input me-2" name="attr_name[]" placeholder="属性名 (例: カラー)" required>
             <input type="text" class="form-control cure-prism-input me-2" name="attr_values[]" placeholder="値 (例: 赤, 青, 白)" required oninput="updateAttrValueImages(this, ${attrIndex})">
             <button type="button" class="btn btn-danger cure-prism-btn-danger" onclick="this.parentElement.parentElement.remove()">削除だよ</button>
+        </div>
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="variant_display[${attrIndex}]" id="variant_display_${attrIndex}" value="button_group">
+            <label class="form-check-label" for="variant_display_${attrIndex}">Button Groupにするよ♪</label>
         </div>
         <div class="attr-values-images" data-attr-index="${attrIndex}"></div>
     `;
@@ -324,14 +332,16 @@ function updateImageOrder() {
 document.getElementById('submitButton').addEventListener('click', function() {
     const form = document.getElementById('productForm');
     if (form.checkValidity()) {
-        form.removeAttribute('onsubmit');
-        updateImageOrder();
-        form.submit();
+        try {
+            updateImageOrder();
+            form.submit();
+        } catch (e) {
+            console.error('Error in submitButton:', e);
+        }
     } else {
         form.reportValidity();
     }
 });
-
 document.getElementById('productForm').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') e.preventDefault();
 });

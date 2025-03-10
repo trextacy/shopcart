@@ -79,14 +79,14 @@ include 'header_admin.php';
     <h1 class="mb-4 cure-sky-title">商品編集: <?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h1>
     
     <!-- デバッグ情報の表示 -->
-    <?php if (isset($_SESSION['last_update'])): ?>
-        <div class="alert alert-info">
-            <h4>前回の更新データ</h4>
-            <pre>POSTデータ: <?php print_r($_SESSION['last_update']['post_data']); ?></pre>
-            <pre>更新後のデータ: <?php print_r($_SESSION['last_update']['updated_product']); ?></pre>
-            <?php unset($_SESSION['last_update']); ?>
-        </div>
-    <?php endif; ?>
+<?php if (isset($_SESSION['last_update'])): ?>
+    <div class="alert alert-info">
+        <h4>前回の更新データ</h4>
+        <pre>POSTデータ: <?php print_r(array_map(function($item) { return is_string($item) ? urldecode($item) : $item; }, $_SESSION['last_update']['post_data'])); ?></pre>
+        <pre>更新後のデータ: <?php print_r($_SESSION['last_update']['updated_product']); ?></pre>
+        <?php unset($_SESSION['last_update']); ?>
+    </div>
+<?php endif; ?>
 
     <?php if (!empty($result['success'])): ?>
         <div class="alert alert-success cure-sky-alert"><?php echo $result['message']; ?></div>
@@ -97,7 +97,8 @@ include 'header_admin.php';
         </div>
     <?php endif; ?>
 
-    <form method="post" enctype="multipart/form-data" id="productForm">
+<!-- product_edit.php のフォーム部分を修正 -->
+<form method="post" enctype="multipart/form-data" id="productForm" onsubmit="handleFormSubmit(event)">
         <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id, ENT_QUOTES, 'UTF-8'); ?>">
         <input type="hidden" name="edit" value="1">
 
@@ -168,27 +169,31 @@ include 'header_admin.php';
                     </div>
 
                     <!-- 属性 -->
-                    <div class="mb-3">
-                        <label class="form-label">属性（例: カラー、サイズなど）</label>
-                        <div id="attr-container">
-                            <?php foreach ($product['attributes'] as $attr_name => $attr_data): ?>
-                                <div class="attr-entry mb-3 border rounded p-2 position-relative cure-sky-entry">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 cure-sky-btn-danger" onclick="this.parentElement.remove()">削除</button>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label">属性名</label>
-                                            <input type="text" class="form-control cure-sky-input" name="attr_name[]" value="<?php echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8'); ?>" required>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <label class="form-label">値（カンマ区切り）</label>
-                                            <input type="text" class="form-control cure-sky-input" name="attr_values[]" value="<?php echo htmlspecialchars(implode(',', $attr_data), ENT_QUOTES, 'UTF-8'); ?>" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <button type="button" class="btn btn-outline-primary mt-2 cure-sky-btn" onclick="addAttrEntry()">属性を追加だよ♪</button>
-                    </div>
+<div class="mb-3">
+    <label class="form-label">属性（例: カラー、サイズなど）</label>
+    <div id="attr-container">
+<?php foreach ($product['attributes'] as $attr_name => $attr_data): ?>
+    <div class="attr-entry mb-3 border rounded p-2 position-relative cure-sky-entry">
+        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 cure-sky-btn-danger" onclick="this.parentElement.remove()">削除</button>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <label class="form-label">属性名</label>
+                <input type="text" class="form-control cure-sky-input" name="attr_name[]" value="<?php echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8'); ?>" required>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">値（カンマ区切り）</label>
+                <input type="text" class="form-control cure-sky-input" name="attr_values[]" value="<?php echo htmlspecialchars(implode(',', $attr_data['values']), ENT_QUOTES, 'UTF-8'); ?>" required>
+            </div>
+        </div>
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="variant_display[<?php echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8'); ?>]" id="variant_display_<?php echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8'); ?>" value="button_group" <?php echo ($attr_data['variant_display'] ?? 'select') === 'button_group' ? 'checked' : ''; ?>>
+            <label class="form-check-label" for="variant_display_<?php echo htmlspecialchars($attr_name, ENT_QUOTES, 'UTF-8'); ?>">Button Groupにするよ♪</label>
+        </div>
+    </div>
+<?php endforeach; ?>
+    </div>
+    <button type="button" class="btn btn-outline-primary mt-2 cure-sky-btn" onclick="addAttrEntry()">属性を追加だよ♪</button>
+</div>
 
                     <!-- バリアント -->
                     <div class="mb-3">
@@ -226,16 +231,20 @@ include 'header_admin.php';
                                                     <label class="form-check-label">売り切れだよ</label>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <select class="form-select cure-sky-select" name="variant_image[<?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?>]">
-                                                    <option value="">デフォルト画像だよ</option>
-                                                    <?php foreach ($product['images'] as $index => $img): ?>
-                                                        <option value="<?php echo htmlspecialchars($img, ENT_QUOTES, 'UTF-8'); ?>" <?php echo ($variant['image'] ?? '') === $img ? 'selected' : ''; ?>>
-                                                            <?php echo htmlspecialchars($product['image_descriptions'][$index] ?? "画像{$index}", ENT_QUOTES, 'UTF-8'); ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </td>
+<td>
+    <select class="form-select cure-sky-select" name="variant_image[<?php echo htmlspecialchars($variant_key, ENT_QUOTES, 'UTF-8'); ?>]" data-initial-value="<?php echo htmlspecialchars($variant['image'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        <option value="" <?php echo empty($variant['image']) ? 'selected' : ''; ?>>デフォルト画像だよ（画像なし）</option>
+        <?php foreach ($product['images'] as $index => $img): ?>
+            <?php
+            $is_selected = ($variant['image'] ?? '') === $img;
+            echo "<!-- Debug: variant_image=" . htmlspecialchars($variant['image'] ?? 'なし') . ", option=" . htmlspecialchars($img) . ", selected=" . ($is_selected ? 'true' : 'false') . " -->";
+            ?>
+            <option value="<?php echo htmlspecialchars($img, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $is_selected ? 'selected' : ''; ?>>
+                <?php echo htmlspecialchars($product['image_descriptions'][$index] ?? "画像{$index}", ENT_QUOTES, 'UTF-8'); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -273,25 +282,42 @@ include 'header_admin.php';
             </div>
         </div>
 
-        <div class="mt-4">
-            <button type="button" id="submitButton" class="btn btn-primary cure-sky-btn">更新だよ♪</button>
-            <button type="button" id="copyButton" class="btn btn-success cure-sky-btn ms-2">コピーして保存だよ♪</button>
-            <a href="product_list.php" class="btn btn-secondary cure-sky-btn ms-2">戻るよ♪</a>
-        </div>
-    </form>
+    <div class="mt-4">
+        <button type="submit" id="submitButton" class="btn btn-primary cure-sky-btn">更新だよ♪</button>
+        <button type="button" id="copyButton" class="btn btn-success cure-sky-btn ms-2">コピーして保存だよ♪</button>
+        <a href="product_list.php" class="btn btn-secondary cure-sky-btn ms-2">戻るよ♪</a>
+    </div>
+</form>
 </div>
 
-<script src="https://cdn.tiny.cloud/1/1gbw1vps2yoottaix7o0rx1ollhlhqxavqe0zqwz28ein7y6/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="tinymce/tinymce.min.js"></script>
+<script src="/shopcart/tinymce/tinymce.min.js"></script>
 <script>
-tinymce.init({
-    selector: '#description',
-    plugins: 'lists link image',
-    toolbar: 'undo redo | bold italic | bullist numlist | link image',
-    menubar: false,
-    height: 300,
-    content_style: 'body { font-family: "Noto Sans JP", sans-serif; font-size: 14px; }'
-});
+  tinymce.init({
+    selector: '#description', // 商品説明のtextareaのID
+    license_key: '1gbw1vps2yoottaix7o0rx1ollhlhqxavqe0zqwz28ein7y6', // ライセンスキー
+    plugins: 'image imagetools media link table lists fullscreen code textcolor align visualblocks template charmap paste wordcount autosave',
+    toolbar: 'undo redo | bold italic | image media link | table | fullscreen code template',
+    menubar: 'file edit insert view format table tools help',
+    content_css: '/shopcart/bscss/custom.css',
+    height: 600,
+    images_upload_url: '/shopcart/upload.php',
+    automatic_uploads: true,
+    templates: [
+      { title: 'ヒーロー画像（左揃え）', content: '<div class="px-4 py-5 text-center"><div class="row flex-lg-row-reverse align-items-center g-5"><div class="col-10 col-sm-8 col-lg-6"><img src="https://placehold.jp/30/dd6699/ffffff/700x400.png?text=Hero+Image" class="d-block mx-lg-auto img-fluid" alt="ヒーロー画像" loading="lazy"></div><div class="col-lg-6"><h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">注目の商品</h1><p class="lead">ここに商品の魅力をたっぷり書けるよ。</p><div class="d-grid gap-2 d-md-flex justify-content-md-start"><button type="button" class="btn btn-primary btn-lg px-4 me-md-2">購入</button><button type="button" class="btn btn-outline-secondary btn-lg px-4">詳細</button></div></div></div></div>' },
+      { title: 'シンプルカード', content: '<div class="card" style="width: 18rem;"><img src="https://placehold.jp/30/dd6699/ffffff/300x200.png?text=Card+Image" class="card-img-top" alt="カード画像"><div class="card-body"><h5 class="card-title">シンプルカード</h5><p class="card-text">基本的なカードだよ。説明をここに。</p><a href="#" class="btn btn-primary">ボタン</a></div></div>' },
+      { title: 'ヘッダーフッター付きカード', content: '<div class="card"><div class="card-header">特集</div><img src="https://placehold.jp/30/dd6699/ffffff/300x200.png?text=Featured+Image" class="card-img-top" alt="特集画像"><div class="card-body"><h5 class="card-title">特別な商品</h5><p class="card-text">限定品だよ！</p></div><div class="card-footer"><a href="#" class="btn btn-success">今すぐチェック</a></div></div>' },
+      { title: '横長カード', content: '<div class="card mb-3" style="max-width: 540px;"><div class="row g-0"><div class="col-md-4"><img src="https://placehold.jp/30/dd6699/ffffff/300x200.png?text=Horizontal+Image" class="img-fluid rounded-start" alt="横長画像"></div><div class="col-md-8"><div class="card-body"><h5 class="card-title">横長カード</h5><p class="card-text">画像とテキストが横に並ぶよ。</p><a href="#" class="btn btn-secondary">詳細</a></div></div></div></div>' },
+      { title: 'リストグループ（画像付き）', content: '<ul class="list-group"><li class="list-group-item d-flex align-items-center"><img src="https://placehold.jp/30/dd6699/ffffff/50x50.png?text=Item+1" class="me-3" alt="アイテム1"><div><h5 class="mb-1">アイテム1</h5><p class="mb-1">説明だよ。</p></div></li><li class="list-group-item d-flex align-items-center"><img src="https://placehold.jp/30/dd6699/ffffff/50x50.png?text=Item+2" class="me-3" alt="アイテム2"><div><h5 class="mb-1">アイテム2</h5><p class="mb-1">もう一つ。</p></div></li></ul>' }
+    ]
+  });
+</script>
+<!-- JavaScript開始 -->
+<script>
 
+
+// === [2] 属性（Attr）管理 ===
+// 新しい属性入力欄を追加する機能
 function addAttrEntry() {
     const container = document.getElementById('attr-container');
     const entry = document.createElement('div');
@@ -308,10 +334,16 @@ function addAttrEntry() {
                 <input type="text" class="form-control cure-sky-input" name="attr_values[]" placeholder="例: 赤, 青, 白" required>
             </div>
         </div>
+        <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="variant_display[new_${Date.now()}]" id="variant_display_new_${Date.now()}" value="button_group">
+            <label class="form-check-label" for="variant_display_new_${Date.now()}">Button Groupにするよ♪</label>
+        </div>
     `;
     container.appendChild(entry);
 }
 
+// === [3] バリエーション生成 ===
+// 属性からバリエーション（例: S-RED-SSD）を生成
 function generateVariants() {
     const attrs = Array.from(document.querySelectorAll('.attr-entry')).map(entry => {
         const name = entry.querySelector('input[name="attr_name[]"]').value;
@@ -342,19 +374,16 @@ function generateVariants() {
             </td>
             <td>
                 <select class="form-select cure-sky-select" name="variant_image[${key}]">
-                    <option value="">デフォルト画像だよ</option>
-                    ${Array.from(document.querySelectorAll('#image-preview .image-item')).map((item, index) => {
-                        const imgSrc = item.querySelector('img').src;
-                        const desc = item.querySelector('textarea').value || `画像${index}`;
-                        return `<option value="${imgSrc}">${desc}</option>`;
-                    }).join('')}
+                    <option value="">デフォルト画像だよ（画像なし）</option>
                 </select>
             </td>
         `;
         container.appendChild(row);
     });
+    updateImageOptions(); // 画像選択肢を更新
 }
 
+// 一括価格適用（バリエーションの価格をまとめて設定）
 function applyBulkPrice() {
     const bulkPrice = document.getElementById('bulk_price').value;
     if (bulkPrice && !isNaN(bulkPrice)) {
@@ -362,34 +391,66 @@ function applyBulkPrice() {
     }
 }
 
+// デカルト積計算（属性の組み合わせを生成）
 function cartesian(arrays) {
     return arrays.reduce((acc, curr) => acc.flatMap(x => curr.map(y => x.concat(y))), [[]]);
 }
 
+// === [4] 画像管理 ===
+// 画像選択肢を更新（バリエーションとデフォルト画像の<select>を管理）
 function updateImageOptions() {
     const images = Array.from(document.querySelectorAll('#image-preview .image-item')).map((item, index) => ({
         src: item.querySelector('img').src,
         description: item.querySelector('textarea').value || `画像${index + 1}`
     }));
     document.querySelectorAll('select[name^="variant_image"]').forEach(select => {
-        const currentValue = select.value;
-        select.innerHTML = '<option value="">デフォルト画像だよ</option>';
-        images.forEach(img => {
+        const initialValue = select.dataset.initialValue || '';
+        console.log(`[${select.name}] Initial value: "${initialValue}"`);
+        select.innerHTML = '<option value="">デフォルト画像だよ（画像なし）</option>';
+        let matched = false;
+        images.forEach((img, index) => {
+            let relativeValue = img.src.replace(window.location.origin, '');
+            if (relativeValue.startsWith(getBasePath())) {
+                relativeValue = relativeValue.replace(getBasePath(), '');
+            }
+            relativeValue = decodeURIComponent(relativeValue);
+            console.log(`[${select.name}] Option ${index + 1}: "${initialValue}" vs "${relativeValue}"`);
             const option = document.createElement('option');
-            option.value = img.src;
+            option.value = relativeValue;
             option.textContent = img.description;
-            if (currentValue === img.src) option.selected = true;
+            if (initialValue === relativeValue) {
+                option.selected = true;
+                console.log(`[${select.name}] MATCHED and selected: "${relativeValue}"`);
+                matched = true;
+            }
             select.appendChild(option);
         });
+        if (initialValue && !matched) {
+            console.warn(`[${select.name}] WARNING: No match found for initial value "${initialValue}"`);
+        }
     });
+
     const defaultSelect = document.getElementById('default_image');
-    defaultSelect.innerHTML = images.map(img => `<option value="${img.src}" ${img.src === images[0].src ? 'selected' : ''}>${img.description}</option>`).join('');
+    if (defaultSelect) {
+        const currentDefault = defaultSelect.value || images[0]?.src.replace(window.location.origin + getBasePath(), '');
+        defaultSelect.innerHTML = images.map(img => {
+            const relativeSrc = img.src.replace(window.location.origin + getBasePath(), '');
+            return `<option value="${relativeSrc}" ${relativeSrc === currentDefault ? 'selected' : ''}>${img.description}</option>`;
+        }).join('');
+    }
 }
 
+// ベースパスを取得（PHPから動的に設定）
+function getBasePath() {
+    return '<?php echo get_base_path(); ?>';
+}
+
+// 画像プレビュー関連
 const imageInput = document.getElementById('images');
 const preview = document.getElementById('image-preview');
 let nextIndex = <?php echo count($product['images']); ?>;
 
+// 新しい画像をプレビューに追加
 function addImageToPreview(file) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -412,66 +473,128 @@ function addImageToPreview(file) {
     reader.readAsDataURL(file);
 }
 
+// ファイル選択時のイベント
 imageInput.addEventListener('change', function(e) {
     Array.from(e.target.files).forEach(file => addImageToPreview(file));
 });
 
+// === [5] ドラッグ＆ドロップ機能 ===
+// 画像の並べ替えを有効化
 function enableDragAndDrop() {
-    const items = preview.querySelectorAll('.image-item');
+    const items = document.querySelectorAll('#image-preview .image-item');
     items.forEach(item => {
-        item.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item.dataset.index));
-        item.addEventListener('dragover', e => e.preventDefault());
-        item.addEventListener('drop', e => {
+        item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', item.dataset.index);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        item.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        });
+        item.addEventListener('drop', (e) => {
             e.preventDefault();
             const fromIndex = e.dataTransfer.getData('text/plain');
             const toIndex = item.dataset.index;
             if (fromIndex !== toIndex) {
-                const fromItem = preview.querySelector(`[data-index="${fromIndex}"]`);
-                const toItem = preview.querySelector(`[data-index="${toIndex}"]`);
-                preview.insertBefore(fromItem, toItem);
-                updateIndices();
-                updateImageOptions();
+                const fromItem = document.querySelector(`#image-preview [data-index="${fromIndex}"]`);
+                const toItem = document.querySelector(`#image-preview [data-index="${toIndex}"]`);
+                if (fromItem && toItem) {
+                    const nextSibling = toItem.nextSibling === fromItem ? toItem : toItem.nextSibling;
+                    preview.insertBefore(fromItem, nextSibling);
+                    updateIndices();
+                    updateImageOptions();
+                }
             }
         });
     });
 }
 
+// 画像のインデックスを更新
 function updateIndices() {
-    const items = preview.querySelectorAll('.image-item');
-    items.forEach((item, index) => item.dataset.index = index);
+    const items = document.querySelectorAll('#image-preview .image-item');
+    items.forEach((item, index) => {
+        item.dataset.index = index;
+        const textarea = item.querySelector('textarea[name="image_desc[]"]');
+        if (textarea) textarea.name = `image_desc[${index}]`;
+    });
 }
 
+// === [6] フォーム送信処理 ===
+// 画像の順序と説明をフォームに反映
 function updateImageOrder() {
-    const items = preview.querySelectorAll('.image-item');
-    const order = [];
-    const descriptions = [];
-    items.forEach((item, index) => {
-        order.push(index);
-        descriptions.push(item.querySelector('textarea').value);
-    });
+    const items = document.querySelectorAll('#image-preview .image-item');
+    const order = Array.from(items).map(item => item.dataset.index);
+    const descriptions = Array.from(items).map(item => item.querySelector('textarea[name^="image_desc"]').value || '');
+    const existingImages = Array.from(items).map(item => item.querySelector('input[name="existing_images[]"]')?.value || '');
+
     document.getElementById('image-order').value = JSON.stringify(order);
     document.getElementById('image-descriptions').value = JSON.stringify(descriptions);
+
+    const form = document.getElementById('productForm');
+    form.querySelectorAll('input[name="existing_images[]"]').forEach(input => input.remove());
+    existingImages.forEach((img, index) => {
+        if (img) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'existing_images[]';
+            input.value = img;
+            form.appendChild(input);
+        }
+    });
 }
 
-document.getElementById('submitButton').addEventListener('click', () => {
+// フォーム送信時のデバッグ
+function handleFormSubmit(event) {
+    console.log('フォーム送信開始');
     updateImageOrder();
-    document.getElementById('productForm').submit();
+    const formData = new FormData(document.getElementById('productForm'));
+    console.log('送信データ:');
+    for (let [key, value] of formData.entries()) {
+        console.log(key + ': ' + value);
+    }
+    return true;
+}
+
+// ドラッグ＆ドロップで画像を追加
+document.body.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const dropZone = document.querySelector('#image-preview');
+    if (dropZone) dropZone.classList.add('dragover');
+});
+document.body.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    const dropZone = document.querySelector('#image-preview');
+    if (dropZone) dropZone.classList.remove('dragover');
+});
+document.body.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const dropZone = document.querySelector('#image-preview');
+    if (dropZone) dropZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        const dataTransfer = new DataTransfer();
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                addImageToPreview(file);
+                dataTransfer.items.add(file);
+            }
+        });
+        imageInput.files = dataTransfer.files;
+    }
 });
 
-document.getElementById('copyButton').addEventListener('click', () => {
-    const form = document.getElementById('productForm');
-    const copyInput = document.createElement('input');
-    copyInput.type = 'hidden';
-    copyInput.name = 'copy';
-    copyInput.value = '1';
-    form.appendChild(copyInput);
-    updateImageOrder();
-    form.submit();
+// === [7] ページ初期化 ===
+// ページ読み込み時の設定
+document.addEventListener('DOMContentLoaded', () => {
+    enableDragAndDrop();
+    window.addEventListener('load', () => {
+        console.log('Window loaded, running updateImageOptions');
+        updateImageOptions();
+    });
 });
 
-enableDragAndDrop();
-updateImageOptions();
 </script>
+<!-- JavaScript終了 -->
 
 <style>
 body {
@@ -591,3 +714,14 @@ body {
 </style>
 
 <?php include 'footer.php'; ?>
+
+<?php if (!empty($result)): ?>
+    <?php if ($result['success']): ?>
+        <div class="alert alert-success cure-sky-alert"><?php echo $result['message']; ?></div>
+    <?php else: ?>
+        <div class="alert alert-danger">
+            <?php echo $result['message']; ?>
+            <pre>エラーデータ: <?php print_r($result['post_data']); ?></pre>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
