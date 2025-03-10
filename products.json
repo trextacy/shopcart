@@ -17,10 +17,13 @@
             "黒"
         ],
         "attributes": {
-            "カラー": [
-                "white",
-                "black"
-            ]
+            "カラー": {
+                "values": [
+                    "white",
+                    "black"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "white": {
@@ -40,12 +43,12 @@
         "registered_date": "2025-03-06"
     },
     "fruit002": {
+        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
         "name": "フルーツバスケット",
-        "description": "新鮮なフルーツのセット。",
+        "description": "<p>新鮮なフルーツのセット。<\/p>",
         "lead": "フルーツだよ！",
         "category": "食品",
         "is_public": true,
-        "default_image": "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
         "images": [
             "https:\/\/placehold.jp\/cccccc\/cccccc\/300x300.png?text=default",
             "https:\/\/placehold.jp\/ffa500\/ffa500\/300x300.png?text=orange",
@@ -57,14 +60,20 @@
             "緑"
         ],
         "attributes": {
-            "種類": [
-                "orange",
-                "apple"
-            ],
-            "サイズ": [
-                "小",
-                "大"
-            ]
+            "種類": {
+                "values": [
+                    "orange",
+                    "apple"
+                ],
+                "variant_display": "select"
+            },
+            "サイズ": {
+                "values": [
+                    "小",
+                    "大"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "orange-小": {
@@ -137,15 +146,21 @@
             "赤"
         ],
         "attributes": {
-            "カラー": [
-                "blue",
-                "red"
-            ],
-            "サイズ": [
-                "25",
-                "26",
-                "27"
-            ]
+            "カラー": {
+                "values": [
+                    "blue",
+                    "red"
+                ],
+                "variant_display": "button_group"
+            },
+            "サイズ": {
+                "values": [
+                    "25",
+                    "26",
+                    "27"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "blue-25": {
@@ -200,10 +215,13 @@
             "緑"
         ],
         "attributes": {
-            "量": [
-                "50g",
-                "100g"
-            ]
+            "量": {
+                "values": [
+                    "50g",
+                    "100g"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "50g": {
@@ -238,9 +256,12 @@
             "黒"
         ],
         "attributes": {
-            "カラー": [
-                "black"
-            ]
+            "カラー": {
+                "values": [
+                    "black"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "black": {
@@ -270,10 +291,13 @@
             "チョコ"
         ],
         "attributes": {
-            "サイズ": [
-                "小",
-                "大"
-            ]
+            "サイズ": {
+                "values": [
+                    "小",
+                    "大"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "小": {
@@ -310,10 +334,13 @@
             "青"
         ],
         "attributes": {
-            "カラー": [
-                "yellow",
-                "blue"
-            ]
+            "カラー": {
+                "values": [
+                    "yellow",
+                    "blue"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "yellow": {
@@ -376,14 +403,20 @@
             "ゴールド"
         ],
         "attributes": {
-            "カラー": [
-                "silver",
-                "gold"
-            ],
-            "サイズ": [
-                "S",
-                "M"
-            ]
+            "カラー": {
+                "values": [
+                    "silver",
+                    "gold"
+                ],
+                "variant_display": "button_group"
+            },
+            "サイズ": {
+                "values": [
+                    "S",
+                    "M"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "silver-S": {
@@ -428,10 +461,13 @@
             "オレンジ"
         ],
         "attributes": {
-            "容量": [
-                "500ml",
-                "1000ml"
-            ]
+            "容量": {
+                "values": [
+                    "500ml",
+                    "1000ml"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "500ml": {
@@ -466,9 +502,12 @@
             "茶"
         ],
         "attributes": {
-            "カラー": [
-                "brown"
-            ]
+            "カラー": {
+                "values": [
+                    "brown"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "brown": {
@@ -528,10 +567,13 @@
             "緑"
         ],
         "attributes": {
-            "香り": [
-                "lemon",
-                "lime"
-            ]
+            "香り": {
+                "values": [
+                    "lemon",
+                    "lime"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "lemon": {
@@ -568,10 +610,13 @@
             "青"
         ],
         "attributes": {
-            "カラー": [
-                "pink",
-                "blue"
-            ]
+            "カラー": {
+                "values": [
+                    "pink",
+                    "blue"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "pink": {
@@ -608,14 +653,20 @@
             "黒"
         ],
         "attributes": {
-            "カラー": [
-                "gray",
-                "black"
-            ],
-            "サイズ": [
-                "S",
-                "M"
-            ]
+            "カラー": {
+                "values": [
+                    "gray",
+                    "black"
+                ],
+                "variant_display": "button_group"
+            },
+            "サイズ": {
+                "values": [
+                    "S",
+                    "M"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "gray-S": {
@@ -660,9 +711,12 @@
             "赤"
         ],
         "attributes": {
-            "味": [
-                "red"
-            ]
+            "味": {
+                "values": [
+                    "red"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "red": {
@@ -718,10 +772,13 @@
             "白"
         ],
         "attributes": {
-            "サイズ": [
-                "S",
-                "L"
-            ]
+            "サイズ": {
+                "values": [
+                    "S",
+                    "L"
+                ],
+                "variant_display": "select"
+            }
         },
         "variants": {
             "S": {
@@ -758,10 +815,13 @@
             "青"
         ],
         "attributes": {
-            "カラー": [
-                "red",
-                "blue"
-            ]
+            "カラー": {
+                "values": [
+                    "red",
+                    "blue"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "red": {
@@ -806,21 +866,27 @@
             "スカイ全身"
         ],
         "attributes": {
-            "容量": [
-                "16GB",
-                "32GB",
-                "64GB"
-            ],
-            "カラー": [
-                "白",
-                "シルバー"
-            ]
+            "容量": {
+                "values": [
+                    "16GB",
+                    "32GB",
+                    "64GB"
+                ],
+                "variant_display": "select"
+            },
+            "カラー": {
+                "values": [
+                    "白",
+                    "シルバー"
+                ],
+                "variant_display": "button_group"
+            }
         },
         "variants": {
             "16GB-白": {
                 "price": 12000,
                 "sold_out": false,
-                "image": "uploads\/67c774b1e875a_character_01_btn_on.png"
+                "image": "uploads\/67c77a0b09516_character_02_btn.png"
             },
             "16GB-シルバー": {
                 "price": 22000,
@@ -853,5 +919,196 @@
             "3GS"
         ],
         "registered_date": "2025-03-04"
+    },
+    "sample0020": {
+        "default_image": "https:\/\/placehold.jp\/300x300.png",
+        "name": "サンプルのための商品だよ",
+        "description": "<!-- 1番目 -->\r\n<div class=\"col-12 col-md-10 col-lg-8 my-1 p-1 p-md-0\" itemprop=\"description\"><!-- p_info begin -->\r\n<h4 class=\"begothic f400 prdtitle mb-4\">衛生面において製品の公共性が認められています。<\/h4>\r\n<p>バスタイムカバーは全国の温泉、温浴施設で着用が広く認められつつあります。<br>タオルなどと違い、着用のまま浴槽に入れます。<\/p>\r\n※長野県衛生部からの公認を経て、2011年には厚生労働省、国土交通省、総務省でも製品の公共性が認められました。\r\n<h4 class=\"begothic f400 prdtitle mb-4\">さり気なく着用できて快適に過ごせます。<\/h4>\r\n<p>バスタイムカバーは、胸部のみをふわりとカバーしますので水着のような圧迫感はなくゆったりくつろげます。 素肌のときのように石鹸をつけてきれいに洗うことができます。<\/p>\r\n<h4 class=\"begothic f400 prdtitle mb-4\">お部屋からお部屋まで着替えることなく着たままで。<\/h4>\r\n<p>バスタイムカバーは、撥水性布地を使用していますのでタオルで良く拭くと表面はほとんど乾きます。 その上から浴衣やシャツを着ることができますので、手術痕を人に見られることなく温泉を楽しめます。<\/p>\r\n<!-- 2番目 --><\/div>",
+        "lead": "タヌキうどんだよ",
+        "category": "",
+        "is_public": true,
+        "images": [
+            "https:\/\/placehold.jp\/300x300.png",
+            "uploads\/67cd86a2a622b_アパートボス設定(これが最強).png",
+            "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png",
+            "uploads\/67cd86a2a82de_アパートボス向け設定.png",
+            "uploads\/67cd86a2a8c1b_ボス設定(最強-2).png",
+            "uploads\/67cd86a2a950e_アパートボスで60B 超え1位をだした設定.png",
+            "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+        ],
+        "image_descriptions": [
+            "デフォルト画像",
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+        ],
+        "attributes": {
+            "サイズ": {
+                "values": [
+                    "S",
+                    "M",
+                    "LL"
+                ],
+                "variant_display": "button_group"
+            },
+            "カラー": {
+                "values": [
+                    "RED",
+                    "BLUE",
+                    "WHITE"
+                ],
+                "variant_display": "select"
+            },
+            "付属品": {
+                "values": [
+                    "SSD",
+                    "HDD",
+                    "USB"
+                ],
+                "variant_display": "select"
+            }
+        },
+        "variants": {
+            "S-RED-SSD": {
+                "price": 2000,
+                "sold_out": true,
+                "image": "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+            },
+            "S-RED-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png"
+            },
+            "S-RED-USB": {
+                "price": 3000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a82de_アパートボス向け設定.png"
+            },
+            "S-BLUE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a8c1b_ボス設定(最強-2).png"
+            },
+            "S-BLUE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a950e_アパートボスで60B 超え1位をだした設定.png"
+            },
+            "S-BLUE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+            },
+            "S-WHITE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a622b_アパートボス設定(これが最強).png"
+            },
+            "S-WHITE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png"
+            },
+            "S-WHITE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a82de_アパートボス向け設定.png"
+            },
+            "M-RED-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a8c1b_ボス設定(最強-2).png"
+            },
+            "M-RED-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a950e_アパートボスで60B 超え1位をだした設定.png"
+            },
+            "M-RED-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+            },
+            "M-BLUE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a622b_アパートボス設定(これが最強).png"
+            },
+            "M-BLUE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png"
+            },
+            "M-BLUE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a82de_アパートボス向け設定.png"
+            },
+            "M-WHITE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a8c1b_ボス設定(最強-2).png"
+            },
+            "M-WHITE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a950e_アパートボスで60B 超え1位をだした設定.png"
+            },
+            "M-WHITE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+            },
+            "LL-RED-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a622b_アパートボス設定(これが最強).png"
+            },
+            "LL-RED-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png"
+            },
+            "LL-RED-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a82de_アパートボス向け設定.png"
+            },
+            "LL-BLUE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a8c1b_ボス設定(最強-2).png"
+            },
+            "LL-BLUE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a950e_アパートボスで60B 超え1位をだした設定.png"
+            },
+            "LL-BLUE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a9dde_一つ目の鬼のやつ向け設定.png"
+            },
+            "LL-WHITE-SSD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a622b_アパートボス設定(これが最強).png"
+            },
+            "LL-WHITE-HDD": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a6c7a_スタンボス向け設定(ゆりね塔では最強だった).png"
+            },
+            "LL-WHITE-USB": {
+                "price": 1000,
+                "sold_out": false,
+                "image": "uploads\/67cd86a2a82de_アパートボス向け設定.png"
+            }
+        },
+        "tags": [],
+        "registered_date": "2025-03-09"
     }
 }
