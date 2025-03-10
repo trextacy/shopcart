@@ -1,5 +1,4 @@
 // common.js
-
 function get_variant_key(selected) {
     return Object.values(selected).join('-');
 }
@@ -36,7 +35,11 @@ function updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minP
     const selects = form.querySelectorAll('.variant-select');
     const selected = {};
     selects.forEach(select => {
-        if (select.value) selected[select.getAttribute('data-attr')] = select.value;
+        if (select.tagName === 'SELECT' && select.value) {
+            selected[select.getAttribute('data-attr')] = select.value;
+        } else if (select.tagName === 'BUTTON' && select.classList.contains('active')) {
+            selected[select.closest('.btn-group').getAttribute('data-attr')] = select.getAttribute('data-value');
+        }
     });
     const variantKey = get_variant_key(selected);
     const variant = product.variants[variantKey];
@@ -49,8 +52,9 @@ function updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minP
         const slides = carouselOrSwiper.wrapperEl.querySelectorAll('.swiper-slide');
         let targetIndex = 0;
         slides.forEach((slide, index) => {
-            const imgSrc = slide.querySelector('img').src;
-            if (imgSrc.includes(image)) {
+            const imgSrc = slide.querySelector('img')?.src || '';
+            const encodedImage = encodeURI(image); // 日本語をエンコード
+            if (imgSrc.includes(encodedImage)) {
                 targetIndex = index;
             }
         });
@@ -68,20 +72,51 @@ function updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minP
     }
 }
 
+function initializeVariantButtons(form, priceDisplay, carouselOrSwiper, product, minPrice, isSwiper = false) {
+    const buttonGroups = form.querySelectorAll('.btn-group[data-attr]');
+    buttonGroups.forEach(group => {
+        const buttons = group.querySelectorAll('.variant-select');
+        const hiddenInput = group.querySelector('.variant-hidden-value');
+        if (buttons.length > 0 && !hiddenInput.value) {
+            buttons[0].classList.add('active'); // 初期値を設定
+            hiddenInput.value = buttons[0].getAttribute('data-value');
+            updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minPrice, isSwiper);
+        }
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                hiddenInput.value = button.getAttribute('data-value');
+                updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minPrice, isSwiper);
+            });
+        });
+    });
+}
+
 function validateForm(form, product) {
     const selects = form.querySelectorAll('.variant-select');
     let allSelected = true;
+    const selected = {};
     selects.forEach(select => {
-        if (!select.value) allSelected = false;
+        let value;
+        if (select.tagName === 'SELECT') {
+            value = select.value;
+        } else if (select.tagName === 'BUTTON' && select.classList.contains('active')) {
+            value = select.getAttribute('data-value');
+            const hiddenInput = select.closest('.btn-group').querySelector('.variant-hidden-value');
+            if (hiddenInput) hiddenInput.value = value; // 隠し入力に値を設定
+        } else {
+            // Button Group内のhidden inputをチェック
+            const hiddenInput = select.closest('.btn-group')?.querySelector('.variant-hidden-value');
+            value = hiddenInput ? hiddenInput.value : '';
+        }
+        if (!value) allSelected = false;
+        else selected[select.closest('.btn-group')?.getAttribute('data-attr') || select.getAttribute('data-attr')] = value;
     });
     if (!allSelected) {
         alert('全部選んでね！');
         return false;
     }
-    const selected = {};
-    selects.forEach(select => {
-        if (select.value) selected[select.getAttribute('data-attr')] = select.value;
-    });
     const variantKey = get_variant_key(selected);
     if (!is_variant_available(product, variantKey)) {
         alert('ごめんね、在庫がないよ…');
