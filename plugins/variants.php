@@ -1,5 +1,6 @@
 <?php
 function display_variant_options($product) {
+    error_log("variant_display check: " . json_encode($product['attributes'] ?? [])); // デバッグログ
     $attributes = $product['attributes'] ?? [];
     $variants = $product['variants'] ?? [];
 
@@ -8,8 +9,9 @@ function display_variant_options($product) {
         return '<p class="text-danger">在庫なし</p>';
     }
 
-    $output = '<div class="mb-3 variant-options">';
-    foreach ($attributes as $attr_name => $values) {
+    $output = '<div class="variant-options">';
+    foreach ($attributes as $attr_name => $attr_data) {
+        $values = $attr_data['values'] ?? [];
         if (empty($values)) continue;
 
         $available_values = [];
@@ -28,15 +30,28 @@ function display_variant_options($product) {
             continue;
         }
 
-        $output .= "<select class='form-select variant-select' name='variant[{$attr_name}]' data-attr='{$attr_name}' required>";
-        $output .= "<option value=''>{$attr_name}を選択</option>";
+        $display_type = $attr_data['variant_display'] ?? 'select';
 
-        foreach ($values as $value) {
-            if (isset($available_values[$value])) {
-                $output .= "<option value='" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "'>" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "</option>";
+        if ($display_type === 'button_group') {
+            $output .= "<div class='btn-group' role='group' aria-label='Variant {$attr_name}' data-attr='{$attr_name}'>";
+            $output .= "<input type='hidden' name='variant[{$attr_name}]' value='' class='variant-hidden-value'>";
+            foreach ($values as $value) {
+                if (isset($available_values[$value])) {
+                    $isActive = (isset($_GET['variant'][$attr_name]) && $_GET['variant'][$attr_name] === $value);
+                    $output .= "<button type='button' class='btn btn-outline-primary variant-select " . ($isActive ? 'active' : '') . "' data-value='" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "'>" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "</button>";
+                }
             }
+            $output .= "</div>";
+        } else {
+            $output .= "<select class='form-select variant-select' name='variant[{$attr_name}]' data-attr='{$attr_name}' required>";
+            $output .= "<option value=''>{$attr_name}を選択</option>";
+            foreach ($values as $value) {
+                if (isset($available_values[$value])) {
+                    $output .= "<option value='" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "'>" . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . "</option>";
+                }
+            }
+            $output .= "</select>";
         }
-        $output .= "</select>";
     }
     $output .= '</div>';
 

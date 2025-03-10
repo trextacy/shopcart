@@ -22,13 +22,9 @@ function verify_csrf_token($token) {
 // Do not modify this function's return format (associative array from products.json) - used site-wide.
 // Added static caching to improve performance.
 function load_products() {
-    static $products = null; // 一度読んだら覚えておく
-    if ($products === null) {
-        $json_file = file_get_contents('products.json');
-        $products = json_decode($json_file, true);
-        if ($products === null) {
-            die('products.json の読み込みに失敗しました。');
-        }
+    $products = json_decode(file_get_contents('products.json'), true) ?? [];
+    foreach ($products as &$product) {
+        $product['variant_display'] = $product['variant_display'] ?? 'select'; // デフォルト値を'select'に設定
     }
     return $products;
 }

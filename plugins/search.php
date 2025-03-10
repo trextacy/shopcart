@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     searchToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         searchForm.classList.toggle('active');
-        console.log('Search toggle clicked, current state:', searchForm.classList.contains('active'));
-        console.log('Search form width:', window.getComputedStyle(searchForm).width); // 実際の幅をログ出力
+//        console.log('Search toggle clicked, current state:', searchForm.classList.contains('active'));
+//        console.log('Search form width:', window.getComputedStyle(searchForm).width); // 実際の幅をログ出力
     });
     
     document.addEventListener('click', (e) => {
         if (!searchForm.contains(e.target) && e.target !== searchToggle) {
-            console.log('Clicked outside, closing search');
+//            console.log('Clicked outside, closing search');
             searchForm.classList.remove('active');
         }
     });
