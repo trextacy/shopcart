@@ -53,7 +53,7 @@ function updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minP
         let targetIndex = 0;
         slides.forEach((slide, index) => {
             const imgSrc = slide.querySelector('img')?.src || '';
-            const encodedImage = encodeURI(image); // 日本語をエンコード
+            const encodedImage = encodeURI(image);
             if (imgSrc.includes(encodedImage)) {
                 targetIndex = index;
             }
@@ -78,7 +78,7 @@ function initializeVariantButtons(form, priceDisplay, carouselOrSwiper, product,
         const buttons = group.querySelectorAll('.variant-select');
         const hiddenInput = group.querySelector('.variant-hidden-value');
         if (buttons.length > 0 && !hiddenInput.value) {
-            buttons[0].classList.add('active'); // 初期値を設定
+            buttons[0].classList.add('active');
             hiddenInput.value = buttons[0].getAttribute('data-value');
             updatePriceAndImage(form, priceDisplay, carouselOrSwiper, product, minPrice, isSwiper);
         }
@@ -104,9 +104,8 @@ function validateForm(form, product) {
         } else if (select.tagName === 'BUTTON' && select.classList.contains('active')) {
             value = select.getAttribute('data-value');
             const hiddenInput = select.closest('.btn-group').querySelector('.variant-hidden-value');
-            if (hiddenInput) hiddenInput.value = value; // 隠し入力に値を設定
+            if (hiddenInput) hiddenInput.value = value;
         } else {
-            // Button Group内のhidden inputをチェック
             const hiddenInput = select.closest('.btn-group')?.querySelector('.variant-hidden-value');
             value = hiddenInput ? hiddenInput.value : '';
         }
@@ -124,3 +123,31 @@ function validateForm(form, product) {
     }
     return true;
 }
+
+// アイコン追加
+document.addEventListener('DOMContentLoaded', () => {
+    const forms = document.querySelectorAll('.product-card form');
+    forms.forEach(form => {
+        const addToCartBtn = form.querySelector('.btn-primary');
+        const detailBtn = form.querySelector('.btn-outline-secondary');
+        if (addToCartBtn && !addToCartBtn.querySelector('i')) {
+            addToCartBtn.innerHTML = '<i class="fas fa-cart-shopping" aria-label="カートに追加"></i>';
+        }
+        if (detailBtn && !detailBtn.querySelector('i')) {
+            detailBtn.innerHTML = '<i class="fas fa-magnifying-glass" aria-label="詳細を見る"></i>';
+        }
+    });
+});
+
+// アニメーション関数
+function animateProductCards() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('animated');
+        }, index * 200); // 各カードに200msの遅延（index.phpに合わせる）
+    });
+}
+
+// ページ読み込み時にアニメーションをトリガー
+window.addEventListener('load', animateProductCards);
