@@ -11,7 +11,7 @@ $products = load_products();
 
 $product_id = $_GET['product_id'] ?? '';
 if (!isset($products[$product_id]) || (isset($products[$product_id]['is_public']) && !$products[$product_id]['is_public'])) {
-    $page_title = '商品が見つかりません - trextacy.com';
+    $page_title = '商品が見つかりません - SHOPCART';
     include 'header.php';
     ?>
     <div class="d-flex flex-column min-vh-100">
@@ -31,8 +31,8 @@ if (!isset($products[$product_id]) || (isset($products[$product_id]['is_public']
 }
 
 $product = $products[$product_id];
-$page_title = htmlspecialchars($product['name']) . ' - trextacy.com';
-$page_description = htmlspecialchars(strip_tags($product['description']));
+$page_title = htmlspecialchars($product['name']) . ' - SHOPCART';
+$page_description = htmlspecialchars(strip_tags($product['seo_description'] ?? $product['description']));
 include 'header.php';
 
 $variant_prices = array_column(array_filter($product['variants'], fn($v) => !$v['sold_out']), 'price');
@@ -50,26 +50,55 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
                 </ol>
             </nav>
 
-            <div class="row g-5">
-                <div class="col-md-6">
-                    <div class="swiper productSwiper">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($product['images'] as $index => $image): ?>
-                                <?php $image_src = (strpos($image, 'http') === 0) ? $image : $base_path . $image; ?>
-                                <div class="swiper-slide">
-                                    <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
-                                         class="img-fluid clickable-image" 
-                                         alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="swiper-pagination mt-3"></div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
-                </div>
 
-<div class="col-md-6">
+<div class="row g-3">
+
+
+<!-- Swiper 部分 -->
+<div class="col-md-7">
+    <div class="swiper productSwiper" id="swiper-product">
+        <div class="swiper-wrapper">
+            <?php foreach ($product['images'] as $index => $image): ?>
+                <?php $image_src = (strpos($image, 'http') === 0) ? $image : $base_path . $image; ?>
+                <div class="swiper-slide">
+                    <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
+                         class="img-fluid clickable-image" 
+                         alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="swiper-pagination mt-3"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+<div class="swiper productThumbs mt-3" id="swiper-thumbs">
+    <div class="swiper-wrapper">
+        <?php foreach ($product['images'] as $index => $image): ?>
+            <?php 
+            $image_src = (strpos($image, 'http') === 0) ? $image : $base_path . $image;
+            // 画像のサイズを取得（ローカルファイルの場合）
+            $aspect = 'square'; // デフォルト
+            if (strpos($image, 'http') !== 0) { // ローカルファイルの場合
+                $file_path = $base_path . $image;
+                if (file_exists($file_path)) {
+                    list($width, $height) = getimagesize($file_path);
+                    $aspect = ($width > $height) ? 'landscape' : ($width < $height ? 'portrait' : 'square');
+                }
+            }
+            ?>
+            <div class="swiper-slide">
+                <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
+                     class="img-fluid" 
+                     data-aspect="<?php echo $aspect; ?>" 
+                     alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+</div>
+
+
+<div class="col-md-5">
     <h1 class="fw-bold mb-3"><?php echo htmlspecialchars($product['name'] ?? '商品名不明', ENT_QUOTES, 'UTF-8'); ?></h1>
     <p class="price fs-3 mb-4"><span id="selected-price"><?php echo $min_price ? number_format($min_price) . '円～' : '価格未定'; ?></span></p>
     <?php
@@ -95,34 +124,46 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
             </div>
         </div>
 
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="imageModalLabel"><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="swiper modalSwiper">
-                            <div class="swiper-wrapper">
-                                <?php foreach ($product['images'] as $index => $image): ?>
-                                    <?php $image_src = (strpos($image, 'http') === 0) ? $image : $base_path . $image; ?>
-                                    <div class="swiper-slide">
-                                        <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
-                                             class="img-fluid" 
-                                             alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <p class="text-center mt-2"><?php echo htmlspecialchars($product['image_descriptions'][$index] ?? '画像 ' . ($index + 1), ENT_QUOTES, 'UTF-8'); ?></p>
-                                    </div>
-                                <?php endforeach; ?>
+<div class="modal fade" id="imageModal" tabindex="-1" aria-label="商品画像の拡大表示" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="swiper modalSwiper" id="swiper-modal">
+                    <div class="swiper-wrapper">
+                        <?php foreach ($product['images'] as $index => $image): ?>
+                            <?php 
+                            $image_src = (strpos($image, 'http') === 0) ? $image : $base_path . $image;
+                            $description = $product['image_descriptions'][$index] ?? '';
+                            $max_length = 20;
+                            if (mb_strlen($description, 'UTF-8') > $max_length) {
+                                $description = mb_substr($description, 0, $max_length, 'UTF-8') . '...';
+                            }
+                            ?>
+                            <div class="swiper-slide">
+                                <div class="swiper-zoom-container" data-swiper-zoom="3">
+                                    <img src="<?php echo htmlspecialchars($image_src, ENT_QUOTES, 'UTF-8'); ?>" 
+                                         class="img-fluid" 
+                                         alt="<?php echo htmlspecialchars($product['image_descriptions'][$index] ?? $product['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                                </div>
+                                <?php if ($description): ?>
+                                    <p class="image-description text-center"><?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php endif; ?>
                             </div>
-                            <div class="swiper-pagination"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+
     </main>
 
     <?php include 'footer.php'; ?>
@@ -132,24 +173,49 @@ $all_sold_out = empty($product['variants']) || !array_reduce($product['variants'
 <script src="<?php echo $base_path; ?>js/common.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // サムネイル用のSwiper
+    const productThumbs = new Swiper('.productThumbs', {
+        loop: false,
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+
+    // メインのSwiper
     const productSwiper = new Swiper('.productSwiper', {
         loop: false,
         pagination: { el: '.swiper-pagination', clickable: true },
         navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        thumbs: { swiper: productThumbs },
     });
 
+    // モーダルのSwiper
     const modalSwiper = new Swiper('.modalSwiper', {
         loop: false,
+        zoom: true,
         pagination: { el: '.swiper-pagination', clickable: true },
         navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        zoom: {
+            maxRatio: 3,
+            minRatio: 1
+        },
+        on: {
+            init: function () {
+                const altDescriptions = <?php echo json_encode($product['image_descriptions'] ?? array_fill(0, count($product['images']), $product['name']), JSON_UNESCAPED_UNICODE); ?>;
+                document.querySelectorAll('.modalSwiper .swiper-slide img').forEach((img, index) => {
+                    img.setAttribute('alt', altDescriptions[index] || '商品画像');
+                });
+            },
+        },
     });
 
+    // 以下は変更なし
     const form = document.getElementById('productForm');
     const priceDisplay = document.getElementById('selected-price');
     const product = <?php echo json_encode($product, JSON_UNESCAPED_UNICODE); ?>;
     const minPrice = <?php echo $min_price ? $min_price : 0; ?>;
 
-    // Button Group初期化時にすべての引数を渡す
     initializeVariantButtons(form, priceDisplay, productSwiper, product, minPrice, true);
 
     const selects = form.querySelectorAll('.variant-select');
@@ -161,17 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 初期更新
     updatePriceAndImage(form, priceDisplay, productSwiper, product, minPrice, true);
 
-    // フォーム送信時のバリデーション
     form.addEventListener('submit', function(e) {
         if (!validateForm(form, product)) {
             e.preventDefault();
         }
     });
 
-    // モーダル画像クリック（変更なし）
     document.querySelectorAll('.clickable-image').forEach(img => {
         let touchStartX = 0;
         let touchStartY = 0;
@@ -209,18 +272,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // クリックイベントをダブルクリックと区別
+        let clickCount = 0;
         img.addEventListener('click', (e) => {
-            const modal = new bootstrap.Modal(document.getElementById('imageModal'));
-            const src = img.src;
-            const slides = document.querySelectorAll('.modalSwiper .swiper-slide');
-            let targetIndex = 0;
-            slides.forEach((slide, index) => {
-                if (slide.querySelector('img').src === src) {
-                    targetIndex = index;
-                }
-            });
-            modalSwiper.slideTo(targetIndex);
-            modal.show();
+            clickCount++;
+            if (clickCount === 1) {
+                setTimeout(() => {
+                    if (clickCount === 1) {
+                        const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                        const src = img.src;
+                        const slides = document.querySelectorAll('.modalSwiper .swiper-slide');
+                        let targetIndex = 0;
+                        slides.forEach((slide, index) => {
+                            if (slide.querySelector('img').src === src) {
+                                targetIndex = index;
+                            }
+                        });
+                        modalSwiper.slideTo(targetIndex);
+                        modal.show();
+                    } else if (clickCount === 2) {
+                        e.preventDefault(); // ダブルクリックでズームを優先
+                    }
+                    clickCount = 0;
+                }, 300);
+            }
         });
     });
 });

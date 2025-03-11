@@ -129,6 +129,12 @@ include 'header_admin.php';
                         <label for="description" class="form-label">商品説明</label>
                         <textarea class="form-control cure-sky-input" id="description" name="description" rows="5"><?php echo htmlspecialchars($product['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                     </div>
+                    <!-- SEO対策用 -->
+                    <div class="mb-3">
+                        <label for="seo_description" class="form-label">SEO用の短い説明（100～150文字だよ♪）</label>
+                        <textarea class="form-control cure-sky-input" id="seo_description" name="seo_description" rows="3" maxlength="150"><?php echo htmlspecialchars($product['seo_description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
+                        <small class="text-muted">グーグルさんに教える短い説明だよ。短く、わかりやすく書いてね！</small>
+                    </div>
                     <div class="mb-3">
                         <label for="lead" class="form-label">リード文（10～15文字の短文）</label>
                         <input type="text" class="form-control cure-sky-input" id="lead" name="lead" value="<?php echo htmlspecialchars($product['lead'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" maxlength="15" placeholder="例: おいしいみかんだよ">

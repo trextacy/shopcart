@@ -61,30 +61,29 @@ include 'header.php';
 <main class="flex-grow-1">
     <!-- Swiperカルーセル -->
     <div class="container">
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img src="https://placehold.jp//1200x400?text=新商品登場" class="w-100" alt="新商品">
-                    <div class="swiper-caption text-start px-4">
-                        <h1>新商品登場！</h1>
-                        <p>キラキラアイテムがいっぱい♪</p>
-                        <a href="#product-grid" class="btn btn-primary">今すぐチェック</a>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <img src="https://placehold.jp//1200x400?text=キャンペーン" class="w-100" alt="キャンペーン">
-                    <div class="swiper-caption text-center">
-                        <h1>特別キャンペーン</h1>
-                        <p>今だけのお得なオファー！</p>
-                        <a href="#product-grid" class="btn btn-primary">見てみる</a>
-                    </div>
-                </div>
+<div class="swiper mySwiper" id="swiper-home">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="https://placehold.jp//1200x400?text=新商品登場" class="w-100" alt="新商品">
+            <div class="swiper-caption text-start px-4">
+                <h1>新商品登場！</h1>
+                <p>キラキラアイテムがいっぱい♪</p>
+                <a href="#product-grid" class="btn btn-primary">今すぐチェック</a>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+        </div>
+        <div class="swiper-slide">
+            <img src="https://placehold.jp//1200x400?text=キャンペーン" class="w-100" alt="キャンペーン">
+            <div class="swiper-caption text-center">
+                <h1>特別キャンペーン</h1>
+                <p>今だけのお得なオファー！</p>
+                <a href="#product-grid" class="btn btn-primary">見てみる</a>
+            </div>
         </div>
     </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>
 
     <div class="container">
 
@@ -244,10 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
     forms.forEach(form => {
         const priceDisplay = form.closest('.product-card').querySelector('.price');
         const carousel = form.closest('.product-card')?.querySelector('.carousel');
-        const product = JSON.parse(form.getAttribute('data-product')); // productデータを取得
+        const product = JSON.parse(form.getAttribute('data-product'));
         const minPrice = parseInt(priceDisplay.getAttribute('data-min-price')) || 0;
 
-        // Button Group初期化時にすべての引数を渡す
         initializeVariantButtons(form, priceDisplay, carousel, product, minPrice);
 
         const selects = form.querySelectorAll('.variant-select');
@@ -257,10 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 初期更新
         updatePriceAndImage(form, priceDisplay, carousel, product, minPrice);
 
-        // フォーム送信時のバリデーション
         form.addEventListener('submit', function(e) {
             if (!validateForm(form, product)) {
                 e.preventDefault();
@@ -272,3 +268,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+

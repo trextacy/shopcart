@@ -8,13 +8,21 @@ if (!isset($_SESSION['csrf_token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo htmlspecialchars($page_description ?? 'trextacy.com - オンラインショッピング', ENT_QUOTES, 'UTF-8'); ?>">
-    <title><?php echo htmlspecialchars($page_title ?? 'trextacy.com', ENT_QUOTES, 'UTF-8'); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($seo_description ?? $page_description ?? 'SHOPCART - オンラインショッピング', ENT_QUOTES, 'UTF-8'); ?>">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?> - SHOPCART">
+    <meta property="og:description" content="<?php echo htmlspecialchars($product['seo_description'] ?? strip_tags($product['description']), ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($product['images'][0] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:url" content="http://localhost/shopcart/product_detail.php?product_id=<?php echo urlencode($product_id); ?>">
+    <meta property="og:type" content="product">
+
+    <title><?php echo htmlspecialchars($page_title ?? 'SHOPCART', ENT_QUOTES, 'UTF-8'); ?></title>
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./bscss/custom.css">
     <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -47,7 +55,7 @@ if (!isset($_SESSION['csrf_token'])) {
 <header>
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">trextacy.com</a>
+            <a class="navbar-brand" href="index.php">SHOPCART</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
