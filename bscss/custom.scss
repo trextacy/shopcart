@@ -92,6 +92,7 @@ body.dark-mode {
     }
 }
 
+//  Footer 関連のCSS
 #site-footer {
     background: $muji-bg !important;
     color: $text-light !important;
@@ -110,82 +111,7 @@ body.dark-mode {
     }
 }
 
-.card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background: $white;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-    .card-img-top { border-radius: 8px 8px 0 0; height: 200px; object-fit: cover; }
-    .card-title { color: $text-light; font-weight: 500; }
-    .price { color: $cure-sky-dark; font-weight: 500; }
-    .card-text { color: $secondary; }
-    .btn-primary {
-        background: $cure-sky !important;
-        border: none;
-        &:hover { background: darken($cure-sky, 10%) !important; }
-    }
-    &.dark-mode {
-        background: #2D2D2D;
-        .card-title, .price { color: $text-dark; }
-        .card-text { color: #ADB5BD; }
-        &:hover { box-shadow: 0 8px 16px rgba($cure-sky, 0.2); }
-    }
-}
-
-.swiper {
-    width: 100% !important;
-    aspect-ratio: 4 / 3;
-    max-height: 60vh;
-    position: relative;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    &-wrapper { height: 100% !important; }
-    &-slide {
-        height: 100% !important;
-        position: relative;
-        overflow: hidden;
-        img { width: 100%; height: 100%; object-fit: cover; }
-    }
-    &-pagination-bullet {
-        background: $white !important;
-        opacity: 0.8;
-        &-active { background: $cure-sky !important; opacity: 1; }
-    }
-    &-button-prev, &-button-next {
-        color: $white !important;
-        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        width: 40px;
-        height: 40px;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-top: 0;
-    }
-    &-button-prev { left: 10px; }
-    &-button-next { right: 10px; }
-}
-.swiper-caption {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $white !important;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    max-width: 90%;
-    &.text-start { padding-left: 1rem; }
-    &.text-center { width: 100%; text-align: center; }
-    h1 { font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: bold; }
-    p { font-size: clamp(1rem, 2.5vw, 1.5rem); }
-    .btn-primary {
-        background: $cure-sky-dark !important;
-        border: 2px solid $white !important;
-        &:hover { background: lighten($cure-sky-dark, 10%) !important; }
-    }
-}
-
+// Background の羽 CSS
 .feather-background {
     position: fixed;
     top: 0;
@@ -216,6 +142,8 @@ body.dark-mode {
     50% { transform: translateY(100px) rotate(45deg); opacity: 0.4; }
     100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
 }
+
+// おそらく全体のCSS 調整の必要あり(IDで分けたい)
 body.dark-mode .feather { opacity: 0.5; filter: brightness(0.8); }
 
 main { padding-bottom: 100px; }
@@ -225,4 +153,363 @@ main { padding-bottom: 100px; }
 body.dark-mode {
     .elevation-1 { box-shadow: 0 2px 4px rgba($cure-sky, 0.1), 0 4px 12px rgba($cure-sky, 0.1) !important; }
     .elevation-2:hover { box-shadow: 0 4px 8px rgba($cure-sky, 0.2), 0 6px 20px rgba($cure-sky, 0.19) !important; }
+}
+
+// 商品カード関連のCSS
+.card-body {
+    padding: 1rem; // 余白を減らしてコンパクトに
+    .card-title {
+        font-size: 1.1rem; // 小さめで読みやすく
+        line-height: 1.2; // 行間を狭く
+    }
+    .card-text {
+        font-size: 0.85rem; // 説明は小さく
+    }
+    .price {
+        font-size: 1rem; // 値段は見やすく
+    }
+    .btn {
+        padding: 0.5rem 1rem; // ボタンをタッチしやすく
+        font-size: 0.9rem; // 文字は小さめに
+    }
+    .variant-options {
+        select {
+            width: 100%; // 選択肢をカード幅に合わせる
+            font-size: 0.85rem; // 小さくして場所節約
+        }
+    }
+}
+
+.card {
+    .card-img-top {
+        aspect-ratio: 4 / 3; // 画像を4:3に
+        object-fit: cover; // 画像がきれいに収まる
+    }
+    .card-title {
+        font-size: 1.1rem; // 商品名を小さく
+        line-height: 1.2; // 行間を狭く
+        background: rgba(255, 255, 255, 0.75); // 白い帯（少し透明）
+    }
+    .price {
+        font-size: 0.9rem; // 価格を小さく
+        background: #fff; // 白い背景
+        color: #333; // 黒っぽい文字
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 軽い影
+        &.sold-out {
+            color: #dc3545; // 売り切れは赤っぽく
+        }
+    }
+    .card-text {
+        font-size: 0.85rem; // 説明を小さく
+    }
+    .variant-options {
+        select {
+            width: 100%; // プルダウンを幅いっぱいに
+            font-size: 0.9rem; // 文字を小さく
+        }
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem; // 小さいボタン
+        font-size: 0.85rem; // 文字も小さく
+    }
+}
+
+// Swiper 関連のCSS
+// 共通のスタイル（すべてのSwiperに適用）
+.swiper {
+    width: 100% !important;
+    position: relative;
+}
+
+// index.php の Swiper（#swiper-home）
+#swiper-home {
+    aspect-ratio: 4 / 3;
+    max-height: 60vh;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    .swiper-wrapper { height: 100% !important; }
+    .swiper-slide {
+        height: 100% !important;
+        position: relative;
+        overflow: hidden;
+        img { width: 100%; height: 100%; object-fit: cover; }
+    }
+    .swiper-pagination-bullet {
+        background: $white !important;
+        opacity: 0.8;
+        &-active { background: $cure-sky !important; opacity: 1; }
+    }
+    .swiper-button-prev, .swiper-button-next {
+        color: $white !important;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0;
+    }
+    .swiper-button-prev { left: 10px; }
+    .swiper-button-next { right: 10px; }
+}
+.swiper-caption { // これは #swiper-home 専用の要素なので、そのまま
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $white !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    max-width: 90%;
+    &.text-start { padding-left: 1rem; }
+    &.text-center { width: 100%; text-align: center; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: bold; }
+    p { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+    .btn-primary {
+        background: $cure-sky-dark !important;
+        border: 2px solid $white !important;
+        &:hover { background: lighten($cure-sky-dark, 10%) !important; }
+    }
+}
+
+// product_detail.php のメインSwiper（#swiper-product）
+#swiper-product {
+    aspect-ratio: 4 / 3; // メイン画像も4:3に
+    max-height: 50vh; // 少し小さめに
+    margin-bottom: 1rem;
+    .swiper-wrapper { height: 100% !important; }
+    .swiper-slide {
+        height: 100% !important;
+        position: relative;
+        overflow: hidden;
+        img { width: 100%; height: 100%; object-fit: contain; }
+    }
+    .swiper-pagination-bullet {
+        background: $white !important;
+        opacity: 0.8;
+        &-active { background: $cure-sky !important; opacity: 1; }
+    }
+    .swiper-button-prev, .swiper-button-next {
+        color: $cure-sky !important;
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0;
+    }
+    .swiper-button-prev { left: 10px; }
+    .swiper-button-next { right: 10px; }
+}
+
+// product_detail.php のサムネイルSwiper（#swiper-thumbs）
+#swiper-thumbs {
+    .swiper-slide {
+        width: 100px; // サムネイルの幅
+        height: 100px; // サムネイルの高さ（正方形）
+        background-color: #ff95e5;
+        opacity: 0.4; // 選択されていないサムネイルを薄く
+        cursor: pointer; // カーソルを指の形に
+        img {
+            width: 100%; // スライドいっぱいに
+            height: 100%; // スライドいっぱいに
+            object-fit: contain; 
+            // 縦長か横長かで切り抜き方を動的に調整
+            &[data-aspect="portrait"] { // 縦長の画像
+                object-position: center top; // 上下をカット
+            }
+            &[data-aspect="landscape"] { // 横長の画像
+                object-position: center left; // 左右をカット
+            }
+        }
+    }
+    .swiper-slide-thumb-active {
+        opacity: 1; // 選択中のサムネイルをはっきり
+    }
+}
+
+// product_detail.php のモーダルSwiper（#swiper-modal）
+#imageModal {
+    .modal-fullscreen .modal-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    .modal-fullscreen .swiper {
+        width: 100%;
+        height: 100%;
+        padding-bottom: 50px; // 丸い点のためのスペースを下に作る
+    }
+    .modal-fullscreen .swiper-slide {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .modal-fullscreen .swiper-slide img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: calc(100% - 120px); // 説明文と丸い点のためにスペースを増やす
+        object-fit: contain;
+    }
+    .image-description {
+        color: $white;
+        font-size: 1.2rem;
+        margin-top: 10px;
+        text-align: center;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        max-width: 90%;
+        flex-shrink: 0;
+    }
+    .swiper-pagination {
+        position: absolute;
+        bottom: 10px; // 画面の下に丸い点を固定
+        width: 100%;
+        text-align: center;
+    }
+    .swiper-button-prev, .swiper-button-next {
+        color: $cure-sky !important;
+        width: 40px;
+        height: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0;
+    }
+    .swiper-button-prev { left: 10px; }
+    .swiper-button-next { right: 10px; }
+    .swiper-pagination-bullet {
+        background: $white !important;
+        opacity: 0.8;
+        &-active { background: $cure-sky !important; opacity: 1; }
+    }
+    .modal-header {
+        border-bottom: none;
+        background-color: transparent;
+        justify-content: flex-end;
+    }
+    .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+// 商品説明部分 TinyMCEでのDIV要素 装飾
+.product-description {
+    background-color: #eeffe2;
+}
+
+/* 商品カードの基本スタイル */
+.product-card {
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+
+    .card-img-top {
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+    }
+
+    .card-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0;
+        background: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        a { color: $text-light; text-decoration: none; }
+    }
+
+    .price {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: $white;
+        color: $text-light;
+        font-weight: bold;
+        border-radius: 4px;
+        &.sold-out { color: #dc3545; }
+    }
+
+    .card-body {
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 120px;
+
+        .card-text {
+            font-size: 0.85rem;
+            color: $text-light;
+            margin-bottom: 0.5rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+
+            .btn {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.85rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                min-height: 30px; // アイコンが確実に収まる高さ
+
+                i {
+                    font-size: 1rem; // アイコンサイズを調整
+                }
+
+                &:disabled i { opacity: 0.5; }
+            }
+        }
+    }
+
+    &:hover {
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 初期状態とアニメーションを追加 */
+    opacity: 0;
+    transform: translateY(50px);
+
+    &.animated {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+}
+
+@media (max-width: 767px) {
+    .product-card .card-title { font-size: 0.9rem; }
+    .product-card .card-body { min-height: 100px; }
+    .product-card .button-group .btn {
+         padding: 0.2rem 0.4rem;
+         font-size: 0.75rem;
+    }
+}
+
+.product-card .button-group .btn {
+    i.fa-cart-shopping { font-size: 1.2rem; color: #FFFFFF; }
+    i.fa-magnifying-glass { font-size: 1.2rem; color: $cure-sky; }
+    &:hover {
+        i { transform: scale(1.4); }
+    }
 }
